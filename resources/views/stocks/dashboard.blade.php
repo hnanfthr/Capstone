@@ -1,52 +1,81 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="mb-4">
-    <h2>Dashboard Posisi Stok Real-time</h2>
-    <p class="text-muted">Pantau pergerakan stok (Net Stock & Control) untuk hari ini.</p>
+<div class="mb-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+    <div>
+        <h3 class="fw-bold text-dark mb-1"><i class="bi bi-speedometer2 text-primary me-2"></i> Dashboard Stok</h3>
+        <p class="text-muted small mb-0">Pantau pergerakan stok (Net Stock & Control) secara real-time.</p>
+    </div>
+    <div class="bg-white px-3 py-2 rounded-pill shadow-sm border d-inline-flex align-items-center">
+        <span class="spinner-grow spinner-grow-sm text-success me-2" role="status" aria-hidden="true"></span>
+        <span class="small fw-bold text-muted">Live Update</span>
+    </div>
 </div>
 
-<div class="row">
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
     @forelse($products as $product)
-    <div class="col-md-4 mb-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="card-title mb-0">{{ $product->nama }}</h5>
-                    <span class="badge bg-secondary">{{ $product->kategori }}</span>
+    <div class="col">
+        <div class="card shadow-sm border-0 h-100 rounded-4 bg-white overflow-hidden" style="transition: transform 0.3s ease;">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="d-flex align-items-center gap-3">
+                        @if($product->foto)
+                            <img src="{{ asset('storage/' . $product->foto) }}" alt="{{ $product->nama }}" width="45" height="45" class="object-fit-cover rounded-circle shadow-sm border">
+                        @else
+                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center text-muted border shadow-sm" style="width: 45px; height: 45px;">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                        @endif
+                        <div>
+                            <h5 class="fw-bold text-dark mb-0 lh-1">{{ $product->nama }}</h5>
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle rounded-pill mt-1 small">{{ $product->kategori }}</span>
+                        </div>
+                    </div>
                 </div>
                 
-                <h1 class="display-4 text-center {{ $product->stok > 10 ? 'text-success' : ($product->stok > 0 ? 'text-warning' : 'text-danger') }}">
-                    {{ $product->stok }}
-                </h1>
-                <p class="text-center text-muted mb-4">Net Stock Saat Ini</p>
+                <div class="text-center py-3 bg-light rounded-4 mb-3">
+                    <h1 class="display-3 fw-bold mb-0 lh-1 {{ $product->stok > 10 ? 'text-success' : ($product->stok > 0 ? 'text-warning' : 'text-danger') }}">
+                        {{ $product->stok }}
+                    </h1>
+                    <p class="text-muted small fw-medium mt-1 mb-0">Net Stock Saat Ini</p>
+                </div>
                 
-                <hr>
-                
-                <div class="d-flex justify-content-between text-sm">
-                    <span><strong>Diproduksi Hari Ini:</strong></span>
-                    <span class="text-success">+{{ $todayProductions->get($product->id, 0) }} item</span>
+                <div class="d-flex justify-content-between align-items-center px-2">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-success bg-opacity-10 rounded-circle p-2 me-2 d-flex align-items-center justify-content-center">
+                            <i class="bi bi-arrow-up-short text-success fs-5 lh-1"></i>
+                        </div>
+                        <span class="text-muted small fw-medium">Produksi Hari Ini</span>
+                    </div>
+                    <span class="badge bg-success rounded-pill px-3 fs-6">+{{ $todayProductions->get($product->id, 0) }}</span>
                 </div>
                 
             </div>
-            <div class="card-footer bg-white border-top-0">
-                <div class="progress" style="height: 5px;">
-                    @php
-                        // Contoh visualisasi sederhana: max kapasitas asumsi 100
-                        $percentage = min(100, ($product->stok / 100) * 100);
-                        $bgClass = $product->stok > 10 ? 'bg-success' : 'bg-danger';
-                    @endphp
-                    <div class="progress-bar {{ $bgClass }}" role="progressbar" style="width: {{ $percentage }}%"></div>
-                </div>
+            <div class="progress bg-light" style="height: 6px; border-radius: 0;">
+                @php
+                    // Visualisasi sederhana kapasitas
+                    $percentage = min(100, ($product->stok / 50) * 100);
+                    $bgClass = $product->stok > 10 ? 'bg-success' : ($product->stok > 0 ? 'bg-warning' : 'bg-danger');
+                @endphp
+                <div class="progress-bar {{ $bgClass }} progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ $percentage }}%"></div>
             </div>
         </div>
     </div>
     @empty
     <div class="col-12">
-        <div class="alert alert-info text-center">
-            Belum ada produk yang terdaftar. <a href="{{ route('products.create') }}" class="alert-link">Tambah Produk Sekarang</a>.
+        <div class="alert alert-info border-0 shadow-sm rounded-4 text-center py-5 bg-white">
+            <i class="bi bi-inbox fs-1 d-block mb-3 text-info"></i>
+            <h5 class="fw-bold">Belum ada produk yang terdaftar</h5>
+            <p class="text-muted">Tambahkan produk pertama Anda untuk mulai memantau stok.</p>
+            <a href="{{ route('products.create') }}" class="btn btn-primary rounded-pill px-4 mt-2">Tambah Produk Sekarang</a>
         </div>
     </div>
     @endforelse
 </div>
+
+<style>
+    .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
 @endsection

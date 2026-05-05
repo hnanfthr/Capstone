@@ -25,24 +25,7 @@ class OrderController extends Controller
             'status' => 'required|string|in:Pending,Sudah Diambil,Dikirim,Selesai',
         ]);
 
-        $oldStatus = $order->status;
         $order->update(['status' => $validated['status']]);
-
-        // Auto-update stock logic
-        if ($validated['status'] === 'Selesai' && $oldStatus !== 'Selesai') {
-            foreach ($order->items as $item) {
-                if ($item->product) {
-                    $item->product->decrement('stok', $item->quantity);
-                }
-            }
-        } elseif ($oldStatus === 'Selesai' && $validated['status'] !== 'Selesai') {
-            // Restore stock if status changed back from Selesai
-            foreach ($order->items as $item) {
-                if ($item->product) {
-                    $item->product->increment('stok', $item->quantity);
-                }
-            }
-        }
 
         return redirect()->route('orders.index')->with('success', 'Status pesanan berhasil diperbarui.');
     }

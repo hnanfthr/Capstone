@@ -36,6 +36,7 @@ class ProductController extends Controller
             'nama' => 'required|string|max:255',
             'harga' => 'required|numeric|min:0',
             'kategori' => 'required|string|in:Wijsman,Segi Panjang,Reguler',
+            'deskripsi' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -75,6 +76,7 @@ class ProductController extends Controller
             'nama' => 'required|string|max:255',
             'harga' => 'required|numeric|min:0',
             'kategori' => 'required|string|in:Wijsman,Segi Panjang,Reguler',
+            'deskripsi' => 'nullable|string',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 

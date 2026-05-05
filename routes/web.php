@@ -9,10 +9,24 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\StorefrontController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Storefront Routes
+Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
+Route::get('/product/{product}', [StorefrontController::class, 'show'])->name('storefront.show');
+Route::post('/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+
+Route::get('/track-order', [StorefrontController::class, 'track'])->name('storefront.track');
+Route::post('/track-order', [StorefrontController::class, 'trackOrder'])->name('storefront.trackOrder');
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 
 // Auth Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');

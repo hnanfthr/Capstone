@@ -41,6 +41,10 @@
                 </select>
             </div>
             <div class="mb-3">
+                <label class="form-label">Deskripsi</label>
+                <textarea name="deskripsi" class="form-control" rows="3">{{ old('deskripsi') }}</textarea>
+            </div>
+            <div class="mb-3">
                 <label class="form-label">Foto Produk (Opsional)</label>
                 <input type="file" name="foto" class="form-control" accept="image/*">
             </div>
