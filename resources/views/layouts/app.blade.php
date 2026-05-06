@@ -212,6 +212,11 @@
                     <i class="bi bi-cash-stack"></i> Penggajian
                 </a>
             </li>
+            <li class="nav-item mt-3">
+                <a class="nav-link {{ request()->routeIs('banners.*') ? 'active' : '' }}" href="{{ route('banners.index') }}">
+                    <i class="bi bi-sliders"></i> Pengaturan Website
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Banner;
 
 class StorefrontController extends Controller
 {
@@ -24,7 +25,9 @@ class StorefrontController extends Controller
             ->take(4)
             ->get();
 
-        return view('storefront.index', compact('products', 'bestSellers', 'topRated'));
+        $banners = Banner::where('is_active', true)->orderBy('id', 'desc')->get();
+
+        return view('storefront.index', compact('products', 'bestSellers', 'topRated', 'banners'));
     }
 
     public function show(Product $product)

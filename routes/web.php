@@ -51,4 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/attendances/clock-out', [AttendanceController::class, 'clockOut'])->name('attendances.clockOut');
     
     Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');
+    
+    // Banner Settings
+    Route::resource('banners', \App\Http\Controllers\BannerController::class)->except(['show']);
 });

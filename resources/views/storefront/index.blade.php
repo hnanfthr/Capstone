@@ -1,71 +1,68 @@
 @extends('layouts.storefront')
 
 @section('content')
-<!-- Hero Section -->
-<div class="row align-items-center mb-5 fade-in-up py-4 py-lg-5">
-    <div class="col-lg-6 mb-4 mb-lg-0 text-center text-lg-start">
-        <span class="badge bg-danger text-white rounded-pill px-3 py-2 mb-3 shadow-sm"><i class="bi bi-stars"></i> Koleksi Spesial Lebaran</span>
-        <h1 class="font-script display-3 text-dark mb-2">Open Pre-Order <span class="text-warning">{{ date('Y') }}</span></h1>
-        <h2 class="fw-bold mb-3 display-4"><span class="brush-accent">Hassan's Koekjes</span></h2>
-        <p class="lead text-muted mb-4">Sajian kue kering premium dengan resep otentik pilihan keluarga. Renyah, lezat, dan dibuat dengan sepenuh hati untuk momen spesial Anda.</p>
-        <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
-            <a href="#katalog" class="btn btn-theme btn-lg px-5 shadow-sm rounded-pill">Lihat Menu</a>
-            <a href="#promo" class="btn btn-outline-warning btn-lg px-4 shadow-sm rounded-pill fw-bold bg-white text-warning">Promo Hari Ini</a>
-        </div>
+<!-- Hero Carousel Section -->
+@if($banners->count() > 0)
+<div id="heroCarousel" class="carousel slide carousel-fade mb-5 fade-in-up mt-lg-4" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        @foreach($banners as $index => $banner)
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}" aria-label="Slide {{ $index + 1 }}"></button>
+        @endforeach
     </div>
-    <div class="col-lg-6">
-        <!-- Hero Banner Layout -->
-        <div class="position-relative">
-            <div class="position-absolute top-0 end-0 bg-warning rounded-circle opacity-25" style="width: 200px; height: 200px; filter: blur(40px); z-index: -1;"></div>
-            <div class="position-absolute bottom-0 start-0 bg-danger rounded-circle opacity-25" style="width: 150px; height: 150px; filter: blur(40px); z-index: -1;"></div>
-            
-            <div class="row g-3">
-                @php 
-                    // Ambil maksimal 3 produk untuk showcase hero
-                    $heroProducts = $products->take(3);
-                @endphp
+    
+    <div class="carousel-inner rounded-4 shadow-lg overflow-hidden">
+        @foreach($banners as $index => $banner)
+            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}" style="height: 400px; background-color: #000;">
+                <img src="{{ asset('storage/' . $banner->image) }}" class="d-block w-100 h-100 object-fit-cover opacity-75" alt="{{ $banner->title }}">
                 
-                @if($heroProducts->count() >= 1 && $heroProducts[0]->foto)
-                    <!-- Jika ada foto produk -->
-                    <div class="col-8">
-                        <img src="{{ asset('storage/' . $heroProducts[0]->foto) }}" class="img-fluid rounded-4 shadow" alt="Kue Premium" style="height: 350px; width: 100%; object-fit: cover;">
-                    </div>
-                    <div class="col-4 d-flex flex-column gap-3">
-                        @if(isset($heroProducts[1]) && $heroProducts[1]->foto)
-                            <img src="{{ asset('storage/' . $heroProducts[1]->foto) }}" class="img-fluid rounded-4 shadow" alt="Kue 2" style="height: 165px; width: 100%; object-fit: cover;">
+                @if($banner->title || $banner->description)
+                <div class="carousel-caption d-flex flex-column h-100 justify-content-center align-items-center text-center pb-5" style="background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); left: 0; right: 0; bottom: 0;">
+                    <div class="container px-4 px-lg-5 mt-auto mb-4">
+                        @if($banner->title)
+                            <h1 class="display-4 fw-bold text-white mb-3 text-shadow">{{ $banner->title }}</h1>
                         @endif
-                        @if(isset($heroProducts[2]) && $heroProducts[2]->foto)
-                            <img src="{{ asset('storage/' . $heroProducts[2]->foto) }}" class="img-fluid rounded-4 shadow" alt="Kue 3" style="height: 165px; width: 100%; object-fit: cover;">
+                        
+                        @if($banner->description)
+                            <p class="lead text-white-50 mb-4 d-none d-md-block text-shadow">{{ $banner->description }}</p>
+                        @endif
+                        
+                        @if($banner->link)
+                            <a href="{{ $banner->link }}" class="btn btn-theme btn-lg px-5 rounded-pill shadow-sm">Lihat Penawaran</a>
                         @endif
                     </div>
-                @else
-                    <!-- Fallback jika belum ada foto produk sama sekali -->
-                    <div class="col-12">
-                        <div class="bg-white rounded-4 shadow-sm p-5 text-center border border-warning border-opacity-25" style="background-image: radial-gradient(circle at top right, rgba(230, 92, 0, 0.05), transparent 300px);">
-                            <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 text-warning rounded-circle mb-4 shadow-sm" style="width: 120px; height: 120px;">
-                                <i class="bi bi-shop font-script" style="font-size: 3.5rem;"></i>
-                            </div>
-                            <h3 class="font-script text-dark fw-bold mb-0">Hassan's Premium Bakery</h3>
-                            <p class="text-muted small mt-2">Dibuat fresh setiap hari dari oven kami.</p>
-                        </div>
-                    </div>
+                </div>
                 @endif
             </div>
-            
-            <!-- Floating Badge -->
-            <div class="position-absolute bottom-0 start-50 translate-middle-x mb-n4 shadow-lg bg-white px-4 py-3 rounded-pill text-center d-flex align-items-center border border-warning border-opacity-25">
-                <div class="me-3 border-end pe-3">
-                    <h4 class="mb-0 fw-bold text-dark">100%</h4>
-                    <span class="small text-muted">Halal & Higienis</span>
-                </div>
-                <div>
-                    <h4 class="mb-0 fw-bold text-warning"><i class="bi bi-star-fill"></i> 4.9</h4>
-                    <span class="small text-muted">Rating Pelanggan</span>
-                </div>
-            </div>
+        @endforeach
+    </div>
+    
+    @if($banners->count() > 1)
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-dark rounded-circle p-3 bg-opacity-50" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-dark rounded-circle p-3 bg-opacity-50" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    @endif
+</div>
+@else
+<!-- Default Hero if no banners -->
+<div class="row align-items-center mb-5 fade-in-up py-4 py-lg-5">
+    <div class="col-lg-6 mb-4 mb-lg-0 text-center text-lg-start">
+        <h1 class="font-script display-3 text-dark mb-2">Welcome to <span class="text-warning">Hassan's Koekjes</span></h1>
+        <h2 class="fw-bold mb-3 display-4"><span class="brush-accent">Premium Bakery</span></h2>
+        <p class="lead text-muted mb-4">Sajian kue kering premium dengan resep otentik pilihan keluarga. Renyah, lezat, dan dibuat dengan sepenuh hati untuk momen spesial Anda.</p>
+        <a href="#katalog" class="btn btn-theme btn-lg px-5 shadow-sm rounded-pill">Lihat Menu</a>
+    </div>
+    <div class="col-lg-6 text-center">
+        <div class="bg-white rounded-circle shadow-lg d-flex align-items-center justify-content-center mx-auto" style="width: 300px; height: 300px; border: 8px solid white;">
+            <i class="bi bi-shop text-warning" style="font-size: 6rem;"></i>
         </div>
     </div>
 </div>
+@endif
 
 <!-- Promo Section -->
 <div id="promo" class="mb-5 fade-in-up mt-5 pt-4">
