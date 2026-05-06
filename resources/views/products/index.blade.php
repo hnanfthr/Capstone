@@ -51,7 +51,7 @@
                             <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-light border" title="Edit">
                                 <i class="bi bi-pencil text-warning"></i>
                             </a>
-                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
+                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline form-delete" data-confirm-message="Yakin ingin menghapus produk ini?">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-light border text-danger" title="Hapus">
@@ -112,7 +112,7 @@
                     <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning w-50 rounded-3 text-dark fw-medium">
                         <i class="bi bi-pencil me-1"></i> Edit
                     </a>
-                    <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="w-50" onsubmit="return confirm('Yakin ingin menghapus produk ini?');">
+                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="w-50 form-delete" data-confirm-message="Yakin ingin menghapus produk ini?">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-outline-danger w-100 rounded-3 fw-medium">

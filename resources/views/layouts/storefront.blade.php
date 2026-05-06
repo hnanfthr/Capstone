@@ -113,24 +113,22 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top mb-4">
+<!-- Desktop Top Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light shadow-sm sticky-top mb-4 d-none d-lg-block">
     <div class="container">
         <a class="navbar-brand font-script fw-bold" href="{{ route('storefront.index') }}">
             Hassan's Koekjes
         </a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#storeNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="storeNav">
+        <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('storefront.index') }}">Katalog Kue</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item me-3 mb-2 mb-lg-0">
+                <li class="nav-item me-3">
                     <a class="nav-link fw-bold text-dark" href="{{ route('storefront.track') }}">
-                        <i class="bi bi-search"></i> Pesanan Saya
+                        <i class="bi bi-search"></i> Lacak Pesanan
                     </a>
                 </li>
                 <li class="nav-item">
@@ -145,6 +143,38 @@
                 </li>
             </ul>
         </div>
+    </div>
+</nav>
+
+<!-- Mobile Top Header -->
+<div class="d-block d-lg-none bg-white shadow-sm sticky-top py-2 px-3 mb-3 d-flex justify-content-between align-items-center" style="z-index: 1030;">
+    <a class="font-script fw-bold text-decoration-none" href="{{ route('storefront.index') }}" style="font-size: 1.5rem; color: var(--accent-color);">
+        Hassan's Koekjes
+    </a>
+</div>
+
+<!-- Mobile Bottom Navigation -->
+<nav class="d-block d-lg-none fixed-bottom bg-white shadow-lg border-top" style="z-index: 1040;">
+    <div class="d-flex justify-content-around py-2">
+        <a href="{{ route('storefront.index') }}" class="text-decoration-none text-center flex-fill pb-1 {{ request()->routeIs('storefront.index') ? 'text-primary' : 'text-muted' }}" style="color: {{ request()->routeIs('storefront.index') ? 'var(--accent-color) !important' : '' }}">
+            <i class="bi bi-shop fs-5 d-block mb-1"></i>
+            <span style="font-size: 0.7rem; font-weight: 500;">Beranda</span>
+        </a>
+        <a href="{{ route('storefront.track') }}" class="text-decoration-none text-center flex-fill pb-1 {{ request()->routeIs('storefront.track') ? 'text-primary' : 'text-muted' }}" style="color: {{ request()->routeIs('storefront.track') ? 'var(--accent-color) !important' : '' }}">
+            <i class="bi bi-search fs-5 d-block mb-1"></i>
+            <span style="font-size: 0.7rem; font-weight: 500;">Lacak</span>
+        </a>
+        <a href="{{ route('cart.index') }}" class="text-decoration-none text-center flex-fill pb-1 position-relative {{ request()->routeIs('cart.index') ? 'text-primary' : 'text-muted' }}" style="color: {{ request()->routeIs('cart.index') ? 'var(--accent-color) !important' : '' }}">
+            <div class="position-relative d-inline-block">
+                <i class="bi bi-cart3 fs-5 d-block mb-1"></i>
+                @if(session('cart') && count(session('cart')) > 0)
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white" style="font-size: 0.55rem; padding: 0.25em 0.4em;">
+                        {{ count(session('cart')) }}
+                    </span>
+                @endif
+            </div>
+            <span style="font-size: 0.7rem; font-weight: 500; display: block;">Keranjang</span>
+        </a>
     </div>
 </nav>
 
