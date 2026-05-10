@@ -213,7 +213,7 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <a class="nav-link {{ request()->routeIs('banners.*') ? 'active' : '' }}" href="{{ route('banners.index') }}">
+                <a class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}" href="{{ route('settings.index') }}">
                     <i class="bi bi-sliders"></i> Pengaturan Website
                 </a>
             </li>
