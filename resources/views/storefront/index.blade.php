@@ -65,16 +65,19 @@
 @endif
 
 <!-- Promo Section -->
+@if($settings['promo_is_active'] == '1')
 <div id="promo" class="mb-5 fade-in-up mt-5 pt-4">
     <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="background: linear-gradient(135deg, #e65c00 0%, #ff8c42 100%);">
         <div class="row g-0 align-items-center">
             <div class="col-md-8 p-4 p-lg-5 text-white">
-                <span class="badge bg-white text-danger rounded-pill px-3 py-2 mb-3 fw-bold shadow-sm">SPESIAL MINGGU INI</span>
-                <h2 class="fw-bold mb-3">Paket Bundling Keluarga 👨‍👩‍👧‍👦</h2>
-                <p class="lead mb-4 opacity-75" style="font-size: 1.1rem;">Beli 3 toples jenis apa saja, dapatkan potongan harga spesial dan <strong class="text-white">Gratis Kartu Ucapan Premium</strong> untuk orang tersayang.</p>
+                <span class="badge bg-white text-danger rounded-pill px-3 py-2 mb-3 fw-bold shadow-sm">{{ $settings['promo_badge'] }}</span>
+                <h2 class="fw-bold mb-3">{{ $settings['promo_title'] }}</h2>
+                <p class="lead mb-4 opacity-75" style="font-size: 1.1rem;">{{ $settings['promo_desc'] }}</p>
                 <div class="d-flex align-items-center gap-3">
                     <a href="#katalog" class="btn btn-light text-danger fw-bold rounded-pill px-4 shadow">Pesan Sekarang</a>
-                    <span class="text-white-50 small"><i class="bi bi-clock"></i> Berlaku s.d akhir bulan</span>
+                    @if($settings['promo_valid_until'])
+                        <span class="text-white-50 small"><i class="bi bi-clock"></i> {{ $settings['promo_valid_until'] }}</span>
+                    @endif
                 </div>
             </div>
             <div class="col-md-4 d-none d-md-block text-center position-relative h-100">
@@ -84,13 +87,14 @@
                 <div class="position-relative h-100 d-flex align-items-center justify-content-center p-4">
                     <div class="bg-white rounded-circle shadow-lg d-flex align-items-center justify-content-center flex-column" style="width: 140px; height: 140px; transform: rotate(15deg);">
                         <span class="text-muted small fw-bold">HEMAT HINGGA</span>
-                        <h3 class="text-danger fw-bold mb-0">20%</h3>
+                        <h3 class="text-danger fw-bold mb-0">{{ $settings['promo_discount_text'] }}</h3>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endif
 
 <!-- Best Sellers Section -->
 @if($bestSellers->count() > 0)

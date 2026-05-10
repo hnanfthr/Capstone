@@ -50,8 +50,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/attendances/clock-in', [AttendanceController::class, 'clockIn'])->name('attendances.clockIn');
     Route::post('/attendances/clock-out', [AttendanceController::class, 'clockOut'])->name('attendances.clockOut');
     
-    Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');
-    
-    // Banner Settings
-    Route::resource('banners', \App\Http\Controllers\BannerController::class)->except(['show']);
+    // Website Settings & Banners
+    Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
+    Route::resource('banners', \App\Http\Controllers\BannerController::class)->except(['index', 'show']);
 });

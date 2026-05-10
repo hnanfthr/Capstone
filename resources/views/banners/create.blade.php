@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="mb-4">
-    <a href="{{ route('banners.index') }}" class="text-decoration-none text-muted small fw-medium">
-        <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Banner
+    <a href="{{ route('settings.index') }}" class="text-decoration-none text-muted small fw-medium">
+        <i class="bi bi-arrow-left me-1"></i> Kembali ke Pengaturan Website
     </a>
     <h3 class="fw-bold text-dark mt-2 mb-0">Tambah Banner Baru</h3>
 </div>

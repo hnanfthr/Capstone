@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\Banner;
+use App\Models\Setting;
 
 class StorefrontController extends Controller
 {
@@ -26,8 +27,19 @@ class StorefrontController extends Controller
             ->get();
 
         $banners = Banner::where('is_active', true)->orderBy('id', 'desc')->get();
+        
+        // Fetch all settings and default values
+        $dbSettings = Setting::all()->pluck('value', 'key');
+        $settings = [
+            'promo_is_active' => $dbSettings['promo_is_active'] ?? '1',
+            'promo_badge' => $dbSettings['promo_badge'] ?? 'SPESIAL MINGGU INI',
+            'promo_title' => $dbSettings['promo_title'] ?? 'Paket Bundling Keluarga 👨‍👩‍👧‍👦',
+            'promo_desc' => $dbSettings['promo_desc'] ?? 'Beli 3 toples jenis apa saja, dapatkan potongan harga spesial dan Gratis Kartu Ucapan Premium untuk orang tersayang.',
+            'promo_valid_until' => $dbSettings['promo_valid_until'] ?? 'Berlaku s.d akhir bulan',
+            'promo_discount_text' => $dbSettings['promo_discount_text'] ?? '20%',
+        ];
 
-        return view('storefront.index', compact('products', 'bestSellers', 'topRated', 'banners'));
+        return view('storefront.index', compact('products', 'bestSellers', 'topRated', 'banners', 'settings'));
     }
 
     public function show(Product $product)
