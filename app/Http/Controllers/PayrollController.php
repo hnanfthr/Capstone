@@ -12,11 +12,14 @@ class PayrollController extends Controller
     public function index(Request $request)
     {
         $date = $request->input('date', date('Y-m-d'));
-        $rate = $request->input('rate', 15000);
+        $profitShare = $request->input('profit_share', 15); // Default 15%
         
-        // Coba cari total kuantitas toples hari ini secara otomatis jika tidak ada input manual
-        $autoQuantity = Production::whereDate('production_date', $date)->sum('quantity');
-        $quantity = $request->input('quantity', $autoQuantity);
+        // Cari total pemasukan dari pesanan yang berstatus 'Selesai' hari ini
+        $autoIncome = \App\Models\Order::whereDate('updated_at', $date)
+            ->where('status', 'Selesai')
+            ->sum('total_price');
+            
+        $totalIncome = $request->input('total_income', $autoIncome);
 
         // Ambil data absensi hari ini yang punya jam masuk dan keluar
         $attendances = Attendance::with('employee')
@@ -46,7 +49,8 @@ class PayrollController extends Controller
             ];
         }
 
-        $totalWage = $quantity * $rate;
+        // Hitung total bagi hasil yang dialokasikan
+        $totalWage = $totalIncome * ($profitShare / 100);
 
         // Hitung upah masing-masing secara proporsional
         foreach ($payrollData as &$data) {
@@ -58,7 +62,7 @@ class PayrollController extends Controller
         }
 
         return view('payroll.index', compact(
-            'date', 'rate', 'quantity', 'totalWage', 'totalHours', 'payrollData'
+            'date', 'profitShare', 'totalIncome', 'totalWage', 'totalHours', 'payrollData'
         ));
     }
 }
