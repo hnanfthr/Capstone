@@ -55,8 +55,29 @@ class CheckoutController extends Controller
                     throw new \Exception("Stok produk {$item['name']} tidak mencukupi (sisa: " . ($product ? $product->stok : 0) . ").");
                 }
                 
-                // Potong stok langsung saat pesanan dibuat
+                // Potong stok utama product
                 $product->decrement('stok', $item['quantity']);
+
+                // FIFO: Potong dari batch produksi tertua yang masih ada sisa stok
+                $qtyToDeduct = $item['quantity'];
+                $batches = \App\Models\Production::where('product_id', $id)
+                            ->where('remaining_quantity', '>', 0)
+                            ->orderBy('production_date', 'asc')
+                            ->orderBy('id', 'asc')
+                            ->get();
+
+                foreach ($batches as $batch) {
+                    if ($qtyToDeduct <= 0) break;
+                    
+                    if ($batch->remaining_quantity >= $qtyToDeduct) {
+                        $batch->decrement('remaining_quantity', $qtyToDeduct);
+                        $qtyToDeduct = 0;
+                    } else {
+                        $deducted = $batch->remaining_quantity;
+                        $batch->update(['remaining_quantity' => 0]);
+                        $qtyToDeduct -= $deducted;
+                    }
+                }
 
                 OrderItem::create([
                     'order_id' => $order->id,

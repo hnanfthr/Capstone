@@ -40,7 +40,7 @@
                     <p class="text-muted small fw-medium mt-1 mb-0">Net Stock Saat Ini</p>
                 </div>
                 
-                <div class="d-flex justify-content-between align-items-center px-2">
+                <div class="d-flex justify-content-between align-items-center px-2 mb-3">
                     <div class="d-flex align-items-center">
                         <div class="bg-success bg-opacity-10 rounded-circle p-2 me-2 d-flex align-items-center justify-content-center">
                             <i class="bi bi-arrow-up-short text-success fs-5 lh-1"></i>
@@ -49,6 +49,28 @@
                     </div>
                     <span class="badge bg-success rounded-pill px-3 fs-6">+{{ $todayProductions->get($product->id, 0) }}</span>
                 </div>
+                
+                @if(isset($activeBatches[$product->id]) && count($activeBatches[$product->id]) > 0)
+                <div class="bg-light rounded-4 p-3 mb-2 border">
+                    <h6 class="fw-bold small text-dark mb-2"><i class="bi bi-diagram-3-fill text-primary me-1"></i> Sistem FIFO Aktif</h6>
+                    <div class="d-flex flex-column gap-2">
+                        @foreach($activeBatches[$product->id] as $index => $batch)
+                            <div class="d-flex justify-content-between align-items-center bg-white p-2 rounded-3 border-start {{ $index == 0 ? 'border-danger border-3 shadow-sm' : 'border-secondary border-2' }}">
+                                <div>
+                                    <div class="small fw-bold {{ $index == 0 ? 'text-danger' : 'text-dark' }}">Batch {{ \Carbon\Carbon::parse($batch->production_date)->format('d M') }}</div>
+                                    <div style="font-size: 0.7rem;" class="text-muted">Exp: {{ \Carbon\Carbon::parse($batch->expiry_date)->format('d M Y') }}</div>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge {{ $index == 0 ? 'bg-danger' : 'bg-secondary' }} rounded-pill">{{ $batch->remaining_quantity }} Toples</span>
+                                    @if($index == 0)
+                                        <div style="font-size: 0.65rem;" class="text-danger fw-bold mt-1">JUAL DULU!</div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
                 
             </div>
             <div class="progress bg-light" style="height: 6px; border-radius: 0;">

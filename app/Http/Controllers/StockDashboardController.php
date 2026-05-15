@@ -17,6 +17,12 @@ class StockDashboardController extends Controller
             ->groupBy('product_id')
             ->pluck('total_produced', 'product_id');
 
-        return view('stocks.dashboard', compact('products', 'todayProductions'));
+        // FIFO: Ambil batch yang masih ada sisa stok, diurutkan dari terlama
+        $activeBatches = Production::where('remaining_quantity', '>', 0)
+            ->orderBy('production_date', 'asc')
+            ->get()
+            ->groupBy('product_id');
+
+        return view('stocks.dashboard', compact('products', 'todayProductions', 'activeBatches'));
     }
 }

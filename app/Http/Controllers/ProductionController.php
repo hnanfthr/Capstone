@@ -17,6 +17,9 @@ class ProductionController extends Controller
             'notes' => 'nullable|string',
         ]);
 
+        $validated['remaining_quantity'] = $validated['quantity'];
+        $validated['expiry_date'] = \Carbon\Carbon::parse($validated['production_date'])->addDays(30)->toDateString();
+        
         $production = Production::create($validated);
 
         // Auto-update stock

@@ -9,7 +9,9 @@ class Production extends Model
     protected $fillable = [
         'product_id',
         'quantity',
+        'remaining_quantity',
         'production_date',
+        'expiry_date',
         'notes',
     ];
 
