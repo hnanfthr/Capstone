@@ -1,6 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
+
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<style>
+    .select2-container--bootstrap-5 .select2-selection {
+        border: none;
+        background-color: #f8f9fa; /* bg-light */
+        padding: 0.375rem 0.75rem;
+        min-height: 38px;
+    }
+    .select2-container--bootstrap-5 .select2-dropdown {
+        border-color: #dee2e6;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+</style>
+@endpush
+
 <div class="mb-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
     <div>
         <h3 class="fw-bold text-dark mb-1"><i class="bi bi-journal-plus text-primary me-2"></i> Buat Pesanan Manual</h3>
@@ -75,8 +94,12 @@
                                     <td class="py-3">
                                         <select name="product_id[]" class="form-select product-select bg-light border-0" required>
                                             <option value="" data-price="0">-- Pilih Kue --</option>
-                                            @foreach($products as $product)
-                                                <option value="{{ $product->id }}" data-price="{{ $product->harga }}">{{ $product->nama }}</option>
+                                            @foreach($products as $kategori => $groupedProducts)
+                                                <optgroup label="{{ $kategori }}">
+                                                    @foreach($groupedProducts as $product)
+                                                        <option value="{{ $product->id }}" data-price="{{ $product->harga }}">{{ $product->nama }}</option>
+                                                    @endforeach
+                                                </optgroup>
                                             @endforeach
                                         </select>
                                     </td>
@@ -124,12 +147,21 @@
 </form>
 
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const itemsBody = document.getElementById('itemsBody');
     const btnAddItem = document.getElementById('btnAddItem');
     const grandTotalDisplay = document.getElementById('grandTotalDisplay');
     const grandTotalInput = document.getElementById('grandTotalInput');
+
+    // Initialize Select2 on the first row
+    $('.product-select').select2({
+        theme: 'bootstrap-5',
+        width: '100%',
+        placeholder: "-- Pilih Kue --"
+    });
 
     // Format currency
     function formatRupiah(number) {
@@ -168,31 +200,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Attach Event Listeners to a row
     function attachEventListeners(row) {
-        const select = row.querySelector('.product-select');
+        const select = $(row).find('.product-select'); // Use jQuery for select2 events
         const quantityInput = row.querySelector('.quantity-input');
         const removeBtn = row.querySelector('.btn-remove-item');
 
-        select.addEventListener('change', calculateGrandTotal);
+        select.on('change', calculateGrandTotal); // select2 change event
         quantityInput.addEventListener('input', calculateGrandTotal);
         
         if (!removeBtn.classList.contains('disabled')) {
             removeBtn.addEventListener('click', function() {
+                // Destroy select2 before removing from DOM
+                $(row).find('.product-select').select2('destroy');
                 row.remove();
                 calculateGrandTotal();
             });
         }
     }
 
-    // Initialize first row
+    // Initialize first row events
     document.querySelectorAll('.item-row').forEach(attachEventListeners);
 
     // Add new row
     btnAddItem.addEventListener('click', function() {
         const firstRow = document.querySelector('.item-row');
+        const selectToClone = firstRow.querySelector('.product-select');
+        
+        // Destroy select2 on the row to be cloned so it copies clean HTML
+        $(selectToClone).select2('destroy');
+        
         const newRow = firstRow.cloneNode(true);
         
-        // Reset values
-        newRow.querySelector('.product-select').selectedIndex = 0;
+        // Re-init select2 on the original row
+        $(selectToClone).select2({ theme: 'bootstrap-5', width: '100%' });
+        
+        // Reset values on the new row
+        const newSelect = newRow.querySelector('.product-select');
+        newSelect.selectedIndex = 0;
         newRow.querySelector('.product-price').value = '0';
         newRow.querySelector('.quantity-input').value = '1';
         newRow.querySelector('.product-subtotal').textContent = 'Rp 0';
@@ -202,6 +245,10 @@ document.addEventListener('DOMContentLoaded', function() {
         removeBtn.classList.remove('disabled');
         
         itemsBody.appendChild(newRow);
+        
+        // Init select2 on the new row
+        $(newSelect).select2({ theme: 'bootstrap-5', width: '100%' });
+        
         attachEventListeners(newRow);
     });
 });

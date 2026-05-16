@@ -32,7 +32,7 @@ class OrderController extends Controller
 
     public function create()
     {
-        $products = \App\Models\Product::orderBy('nama')->get();
+        $products = \App\Models\Product::orderBy('nama')->get()->groupBy('kategori');
         return view('orders.create', compact('products'));
     }
 
