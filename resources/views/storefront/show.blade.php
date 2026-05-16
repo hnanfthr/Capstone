@@ -82,14 +82,16 @@
                             <input type="text" name="customer_name" class="form-control bg-light border-0" required placeholder="Contoh: Budi">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label text-muted small">Rating (1-5 Bintang)</label>
-                            <select name="rating" class="form-select bg-light border-0" required>
-                                <option value="5">5 - Sangat Enak! 🌟🌟🌟🌟🌟</option>
-                                <option value="4">4 - Enak 🌟🌟🌟🌟</option>
-                                <option value="3">3 - Lumayan 🌟🌟🌟</option>
-                                <option value="2">2 - Kurang 🌟🌟</option>
-                                <option value="1">1 - Sangat Kurang 🌟</option>
-                            </select>
+                            <label class="form-label text-muted small d-block">Rating (1-5 Bintang)</label>
+                            <div class="interactive-stars fs-3 text-warning" style="cursor: pointer; display: inline-block;">
+                                <i class="bi bi-star-fill star-icon" data-rating="1"></i>
+                                <i class="bi bi-star-fill star-icon" data-rating="2"></i>
+                                <i class="bi bi-star-fill star-icon" data-rating="3"></i>
+                                <i class="bi bi-star-fill star-icon" data-rating="4"></i>
+                                <i class="bi bi-star-fill star-icon" data-rating="5"></i>
+                            </div>
+                            <input type="hidden" name="rating" id="ratingInput" value="5" required>
+                            <div id="ratingText" class="small text-muted mt-1 fw-bold">5 - Sangat Enak!</div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -129,4 +131,62 @@
         @endforelse
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.interactive-stars .star-icon');
+    const ratingInput = document.getElementById('ratingInput');
+    const ratingText = document.getElementById('ratingText');
+    
+    const ratingTexts = {
+        1: "1 - Sangat Kurang",
+        2: "2 - Kurang",
+        3: "3 - Lumayan",
+        4: "4 - Enak",
+        5: "5 - Sangat Enak!"
+    };
+
+    function updateStars(rating) {
+        stars.forEach(star => {
+            if (parseInt(star.dataset.rating) <= rating) {
+                star.classList.remove('bi-star', 'text-muted');
+                star.classList.add('bi-star-fill', 'text-warning');
+            } else {
+                star.classList.remove('bi-star-fill', 'text-warning');
+                star.classList.add('bi-star', 'text-muted');
+            }
+        });
+        ratingText.textContent = ratingTexts[rating];
+    }
+
+    stars.forEach(star => {
+        star.addEventListener('mouseover', function() {
+            updateStars(this.dataset.rating);
+            // Highlight stars slightly on hover
+            stars.forEach(s => {
+                if(parseInt(s.dataset.rating) <= parseInt(this.dataset.rating)) {
+                    s.style.transform = 'scale(1.1)';
+                    s.style.transition = 'transform 0.2s';
+                }
+            });
+        });
+        
+        star.addEventListener('mouseout', function() {
+            updateStars(ratingInput.value);
+            stars.forEach(s => s.style.transform = 'scale(1)');
+        });
+        
+        star.addEventListener('click', function() {
+            ratingInput.value = this.dataset.rating;
+            updateStars(this.dataset.rating);
+            
+            // Add a small bounce animation on click
+            this.style.transform = 'scale(1.3)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+});
+</script>
 @endsection
