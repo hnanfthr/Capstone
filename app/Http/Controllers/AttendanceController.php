@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Attendance;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Response;
 
 class AttendanceController extends Controller
 {
@@ -57,5 +58,67 @@ class AttendanceController extends Controller
         }
 
         return redirect()->back()->withErrors(['Karyawan belum Clock In hari ini.']);
+    }
+
+    public function history(Request $request)
+    {
+        $query = Attendance::with('employee')->orderBy('date', 'desc')->orderBy('clock_in', 'desc');
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
+
+        $attendances = $query->paginate(20)->withQueryString();
+
+        return view('attendances.history', compact('attendances'));
+    }
+
+    public function export(Request $request)
+    {
+        $query = Attendance::with('employee')->orderBy('date', 'desc')->orderBy('clock_in', 'desc');
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
+
+        $attendances = $query->get();
+
+        $filename = "riwayat_absensi_" . date('Ymd_His') . ".csv";
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $callback = function() use($attendances) {
+            $file = fopen('php://output', 'w');
+            
+            // Kolom header CSV
+            fputcsv($file, ['Tanggal', 'Nama Karyawan', 'Jam Masuk', 'Jam Keluar', 'Total Jam Kerja']);
+
+            foreach ($attendances as $row) {
+                $hoursWorked = 0;
+                if ($row->clock_in && $row->clock_out) {
+                    $in = Carbon::parse($row->clock_in);
+                    $out = Carbon::parse($row->clock_out);
+                    $hoursWorked = round($in->diffInMinutes($out) / 60, 2);
+                }
+
+                fputcsv($file, [
+                    $row->date,
+                    $row->employee ? $row->employee->name : 'N/A',
+                    $row->clock_in ?? '-',
+                    $row->clock_out ?? '-',
+                    $hoursWorked
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 }

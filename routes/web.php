@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
     Route::post('/attendances/clock-in', [AttendanceController::class, 'clockIn'])->name('attendances.clockIn');
     Route::post('/attendances/clock-out', [AttendanceController::class, 'clockOut'])->name('attendances.clockOut');
+    Route::get('/attendances/history', [AttendanceController::class, 'history'])->name('attendances.history');
+    Route::get('/attendances/export', [AttendanceController::class, 'export'])->name('attendances.export');
     
     Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');
     Route::post('/payroll/store', [PayrollController::class, 'store'])->name('payroll.store');

@@ -2,10 +2,17 @@
 
 @section('content')
 <div class="card shadow-sm border-0 rounded-4 mb-4 bg-white">
-    <div class="card-body p-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-        <div>
-            <h4 class="fw-bold text-dark mb-1"><i class="bi bi-calendar-check text-primary me-2"></i> Absensi Karyawan</h4>
-            <p class="text-muted small mb-0">Kelola absensi karyawan (Clock In / Clock Out)</p>
+    <div class="card-body p-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+            <div>
+                <h4 class="fw-bold text-dark mb-1"><i class="bi bi-calendar-check text-primary me-2"></i> Absensi Karyawan</h4>
+                <p class="text-muted small mb-0">Kelola absensi karyawan (Clock In / Clock Out)</p>
+            </div>
+            <div>
+                <a href="{{ route('attendances.history') }}" class="btn btn-outline-dark rounded-pill fw-bold px-4 shadow-sm">
+                    <i class="bi bi-clock-history me-1"></i> Riwayat Absensi
+                </a>
+            </div>
         </div>
         <form action="{{ route('attendances.index') }}" method="GET" class="d-flex align-items-center gap-2 bg-light p-2 rounded-3 border">
             <label for="date" class="form-label mb-0 fw-bold small text-muted px-2">Tanggal:</label>
