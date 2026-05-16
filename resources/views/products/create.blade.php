@@ -36,8 +36,8 @@
                 <select name="kategori" class="form-select" required>
                     <option value="">Pilih Kategori</option>
                     <option value="Wijsman" {{ old('kategori') == 'Wijsman' ? 'selected' : '' }}>Wijsman</option>
-                    <option value="Segi Panjang" {{ old('kategori') == 'Segi Panjang' ? 'selected' : '' }}>Segi Panjang</option>
-                    <option value="Reguler" {{ old('kategori') == 'Reguler' ? 'selected' : '' }}>Reguler</option>
+                    <option value="Hantaran" {{ old('kategori') == 'Hantaran' ? 'selected' : '' }}>Hantaran</option>
+                    <option value="Original" {{ old('kategori') == 'Original' ? 'selected' : '' }}>Original</option>
                 </select>
             </div>
             <div class="mb-3">

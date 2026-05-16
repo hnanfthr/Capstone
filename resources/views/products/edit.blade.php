@@ -37,8 +37,8 @@
                 <select name="kategori" class="form-select" required>
                     <option value="">Pilih Kategori</option>
                     <option value="Wijsman" {{ old('kategori', $product->kategori) == 'Wijsman' ? 'selected' : '' }}>Wijsman</option>
-                    <option value="Segi Panjang" {{ old('kategori', $product->kategori) == 'Segi Panjang' ? 'selected' : '' }}>Segi Panjang</option>
-                    <option value="Reguler" {{ old('kategori', $product->kategori) == 'Reguler' ? 'selected' : '' }}>Reguler</option>
+                    <option value="Hantaran" {{ old('kategori', $product->kategori) == 'Hantaran' ? 'selected' : '' }}>Hantaran</option>
+                    <option value="Original" {{ old('kategori', $product->kategori) == 'Original' ? 'selected' : '' }}>Original</option>
                 </select>
             </div>
             <div class="mb-3">
