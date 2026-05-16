@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-5 fade-in-up mt-4">
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-dark mb-2">Katalog Produk</h1>
+        <h1 class="display-3 fw-bold text-dark mb-2 font-script">Katalog Produk</h1>
         <p class="lead text-muted">Jelajahi seluruh varian kue spesial kami, dibuat dengan bahan premium.</p>
     </div>
 

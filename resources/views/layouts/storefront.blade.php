@@ -13,10 +13,11 @@
     
     <style>
         :root {
-            --bg-color: #fcf4eb;
-            --accent-color: #e65c00;
-            --accent-hover: #cc5200;
-            --text-dark: #4a3b32;
+            --bg-color: #Fdfbf7;
+            --accent-color: #8B5A2B; /* Deep Chocolate */
+            --accent-hover: #6b4423;
+            --text-dark: #3E2723;
+            --gold: #D4AF37;
         }
 
         body { 
@@ -106,10 +107,36 @@
         }
 
         footer {
-            background-color: #4a3b32;
-            color: #fcf4eb;
+            background-color: var(--text-dark);
+            color: var(--bg-color);
         }
+
+        /* Swiper custom styles */
+        .swiper-button-next, .swiper-button-prev {
+            color: var(--accent-color) !important;
+            background: rgba(255, 255, 255, 0.8);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 1.2rem !important;
+            font-weight: bold;
+        }
+        
+        /* Glassmorphism utilities */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        }
+        
     </style>
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 </head>
 <body>
 
@@ -184,6 +211,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script>
     // Intersection Observer for scroll animations
     document.addEventListener('DOMContentLoaded', function() {
@@ -198,6 +226,23 @@
         document.querySelectorAll('.fade-in-up').forEach((el) => {
             observer.observe(el);
         });
+        
+        // Initialize Swipers if they exist
+        if(document.querySelector('.product-swiper')) {
+            new Swiper('.product-swiper', {
+                slidesPerView: 1.2,
+                spaceBetween: 20,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    576: { slidesPerView: 2.2, spaceBetween: 20 },
+                    768: { slidesPerView: 3.2, spaceBetween: 25 },
+                    992: { slidesPerView: 4, spaceBetween: 30 }
+                }
+            });
+        }
     });
 </script>
 </body>

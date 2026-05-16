@@ -67,28 +67,24 @@
 <!-- Promo Section -->
 @if($settings['promo_is_active'] == '1')
 <div id="promo" class="mb-5 fade-in-up mt-5 pt-4">
-    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="background: linear-gradient(135deg, #e65c00 0%, #ff8c42 100%);">
-        <div class="row g-0 align-items-center">
+    <div class="card border-0 rounded-4 overflow-hidden position-relative" style="background: url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1000') center/cover no-repeat;">
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, rgba(139, 90, 43, 0.8) 0%, rgba(62, 39, 35, 0.9) 100%);"></div>
+        <div class="row g-0 align-items-center position-relative z-1">
             <div class="col-md-8 p-4 p-lg-5 text-white">
-                <span class="badge bg-white text-danger rounded-pill px-3 py-2 mb-3 fw-bold shadow-sm">{{ $settings['promo_badge'] }}</span>
-                <h2 class="fw-bold mb-3">{{ $settings['promo_title'] }}</h2>
+                <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 fw-bold shadow-sm">{{ $settings['promo_badge'] }}</span>
+                <h2 class="fw-bold mb-3 font-script" style="font-size: 3rem;">{{ $settings['promo_title'] }}</h2>
                 <p class="lead mb-4 opacity-75" style="font-size: 1.1rem;">{{ $settings['promo_desc'] }}</p>
                 <div class="d-flex align-items-center gap-3">
-                    <a href="#katalog" class="btn btn-light text-danger fw-bold rounded-pill px-4 shadow">Pesan Sekarang</a>
+                    <a href="#katalog" class="btn btn-light text-dark fw-bold rounded-pill px-4 shadow">Pesan Sekarang</a>
                     @if($settings['promo_valid_until'])
                         <span class="text-white-50 small"><i class="bi bi-clock"></i> {{ $settings['promo_valid_until'] }}</span>
                     @endif
                 </div>
             </div>
-            <div class="col-md-4 d-none d-md-block text-center position-relative h-100">
-                <div class="position-absolute top-50 start-50 translate-middle text-white opacity-25">
-                    <i class="bi bi-gift-fill" style="font-size: 12rem;"></i>
-                </div>
-                <div class="position-relative h-100 d-flex align-items-center justify-content-center p-4">
-                    <div class="bg-white rounded-circle shadow-lg d-flex align-items-center justify-content-center flex-column" style="width: 140px; height: 140px; transform: rotate(15deg);">
-                        <span class="text-muted small fw-bold">HEMAT HINGGA</span>
-                        <h3 class="text-danger fw-bold mb-0">{{ $settings['promo_discount_text'] }}</h3>
-                    </div>
+            <div class="col-md-4 d-none d-md-flex text-center align-items-center justify-content-center p-4">
+                <div class="glass-card rounded-circle d-flex align-items-center justify-content-center flex-column" style="width: 160px; height: 160px; transform: rotate(10deg);">
+                    <span class="text-white small fw-bold">HEMAT HINGGA</span>
+                    <h2 class="text-warning fw-bold mb-0 display-4">{{ $settings['promo_discount_text'] }}</h2>
                 </div>
             </div>
         </div>
@@ -100,36 +96,43 @@
 @if($bestSellers->count() > 0)
 <div class="mb-5 pt-4 fade-in-up">
     <h3 class="fw-bold text-center mb-4"><i class="bi bi-star-fill text-warning me-2"></i> Paling Banyak Dipesan (Best Seller)</h3>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        @foreach($bestSellers as $product)
-            <div class="col">
-                <a href="{{ route('storefront.show', $product->id) }}" class="text-decoration-none">
-                    <div class="card h-100 product-card border-0 shadow-sm position-relative">
-                        <div class="position-absolute top-0 start-0 m-2 z-1">
-                            <span class="badge bg-danger shadow-sm"><i class="bi bi-fire"></i> Best Seller</span>
-                        </div>
-                        @if($product->foto)
-                            <img src="{{ asset('storage/' . $product->foto) }}" class="card-img-top" alt="{{ $product->nama }}">
-                        @else
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center text-muted" style="height: 220px;">
-                                <i class="bi bi-image fs-1"></i>
+    <div class="swiper product-swiper pb-5 px-2">
+        <div class="swiper-wrapper">
+            @foreach($bestSellers as $product)
+                <div class="swiper-slide h-auto">
+                    <a href="{{ route('storefront.show', $product->id) }}" class="text-decoration-none">
+                        <div class="card h-100 product-card border-0 shadow-sm position-relative">
+                            <div class="position-absolute top-0 start-0 m-2 z-1">
+                                <span class="badge badge-theme shadow-sm"><i class="bi bi-fire"></i> Best Seller</span>
                             </div>
-                        @endif
-                        <div class="card-body text-center">
-                            <h5 class="card-title fw-bold mb-1 text-dark">{{ $product->nama }}</h5>
-                            <p class="text-warning fw-bold mb-2 fs-5">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
-                            <div class="star-rating small mb-2">
-                                @php $rating = round($product->average_rating); @endphp
-                                @for($i=1; $i<=5; $i++)
-                                    <i class="bi bi-star{{ $i <= $rating ? '-fill' : '' }}"></i>
-                                @endfor
-                                <span class="text-muted ms-1">({{ $product->reviews->count() }})</span>
+                            @if($product->foto)
+                                <img src="{{ asset('storage/' . $product->foto) }}" class="card-img-top" alt="{{ $product->nama }}">
+                            @else
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center text-muted" style="height: 220px;">
+                                    <i class="bi bi-image fs-1"></i>
+                                </div>
+                            @endif
+                            <div class="card-body text-center d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5 class="card-title fw-bold mb-1 text-dark">{{ $product->nama }}</h5>
+                                    <div class="star-rating small mb-2">
+                                        @php $rating = round($product->average_rating); @endphp
+                                        @for($i=1; $i<=5; $i++)
+                                            <i class="bi bi-star{{ $i <= $rating ? '-fill' : '' }}"></i>
+                                        @endfor
+                                        <span class="text-muted ms-1">({{ $product->reviews->count() }})</span>
+                                    </div>
+                                </div>
+                                <p class="text-warning fw-bold mb-0 fs-5 mt-2">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-        @endforeach
+                    </a>
+                </div>
+            @endforeach
+        </div>
+        <!-- Add Pagination/Navigation -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
     </div>
 </div>
 @endif
@@ -138,32 +141,38 @@
 @if($topRated->count() > 0)
 <div class="mb-5 py-4 bg-white rounded-4 shadow-sm px-4 fade-in-up">
     <h3 class="fw-bold text-center mb-4"><i class="bi bi-heart-fill text-danger me-2"></i> Rating Tertinggi (Top Rated)</h3>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        @foreach($topRated as $product)
-            <div class="col">
-                <a href="{{ route('storefront.show', $product->id) }}" class="text-decoration-none">
-                    <div class="card h-100 product-card border-0 shadow-sm bg-light">
-                        @if($product->foto)
-                            <img src="{{ asset('storage/' . $product->foto) }}" class="card-img-top" alt="{{ $product->nama }}">
-                        @else
-                            <div class="card-img-top bg-white d-flex align-items-center justify-content-center text-muted" style="height: 220px;">
-                                <i class="bi bi-image fs-1"></i>
-                            </div>
-                        @endif
-                        <div class="card-body text-center">
-                            <h5 class="card-title fw-bold mb-1 text-dark">{{ $product->nama }}</h5>
-                            <p class="text-warning fw-bold mb-2 fs-5">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
-                            <div class="star-rating small">
-                                @php $rating = round($product->average_rating); @endphp
-                                @for($i=1; $i<=5; $i++)
-                                    <i class="bi bi-star{{ $i <= $rating ? '-fill' : '' }}"></i>
-                                @endfor
+    <div class="swiper product-swiper pb-5 px-2">
+        <div class="swiper-wrapper">
+            @foreach($topRated as $product)
+                <div class="swiper-slide h-auto">
+                    <a href="{{ route('storefront.show', $product->id) }}" class="text-decoration-none">
+                        <div class="card h-100 product-card border-0 shadow-sm bg-white">
+                            @if($product->foto)
+                                <img src="{{ asset('storage/' . $product->foto) }}" class="card-img-top" alt="{{ $product->nama }}">
+                            @else
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center text-muted" style="height: 220px;">
+                                    <i class="bi bi-image fs-1"></i>
+                                </div>
+                            @endif
+                            <div class="card-body text-center d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5 class="card-title fw-bold mb-1 text-dark">{{ $product->nama }}</h5>
+                                    <div class="star-rating small mb-2">
+                                        @php $rating = round($product->average_rating); @endphp
+                                        @for($i=1; $i<=5; $i++)
+                                            <i class="bi bi-star{{ $i <= $rating ? '-fill' : '' }}"></i>
+                                        @endfor
+                                    </div>
+                                </div>
+                                <p class="text-warning fw-bold mb-0 fs-5 mt-2">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-        @endforeach
+                    </a>
+                </div>
+            @endforeach
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
     </div>
 </div>
 @endif
