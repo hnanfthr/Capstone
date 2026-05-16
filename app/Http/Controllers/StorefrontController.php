@@ -35,7 +35,7 @@ class StorefrontController extends Controller
             'promo_desc' => $dbSettings['promo_desc'] ?? 'Beli 3 toples jenis apa saja, dapatkan potongan harga spesial dan Gratis Kartu Ucapan Premium untuk orang tersayang.',
             'promo_valid_until' => $dbSettings['promo_valid_until'] ?? 'Berlaku s.d akhir bulan',
             'promo_discount_text' => $dbSettings['promo_discount_text'] ?? '20%',
-            'whatsapp_number' => $dbSettings['whatsapp_number'] ?? '6281234567890',
+            'whatsapp_number' => $dbSettings['whatsapp_number'] ?? '6281339263950',
         ];
 
         return view('storefront.index', compact('bestSellers', 'topRated', 'banners', 'settings'));
@@ -44,7 +44,7 @@ class StorefrontController extends Controller
     public function catalog()
     {
         $dbSettings = Setting::all()->pluck('value', 'key');
-        $waNumber = $dbSettings['whatsapp_number'] ?? '6281234567890';
+        $waNumber = $dbSettings['whatsapp_number'] ?? '6281339263950';
         $productsByCategory = Product::all()->groupBy('kategori');
         return view('storefront.catalog', compact('productsByCategory', 'waNumber'));
     }
@@ -53,7 +53,7 @@ class StorefrontController extends Controller
     {
         $product->load('reviews');
         $dbSettings = Setting::all()->pluck('value', 'key');
-        $waNumber = $dbSettings['whatsapp_number'] ?? '6281234567890';
+        $waNumber = $dbSettings['whatsapp_number'] ?? '6281339263950';
         return view('storefront.show', compact('product', 'waNumber'));
     }
 

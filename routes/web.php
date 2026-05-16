@@ -22,12 +22,7 @@ Route::post('/reviews', [\App\Http\Controllers\ReviewController::class, 'store']
 Route::get('/track-order', [StorefrontController::class, 'track'])->name('storefront.track');
 Route::post('/track-order', [StorefrontController::class, 'trackOrder'])->name('storefront.trackOrder');
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+    // Web Cart and Checkout have been deprecated in favor of WA Pre-Order
 
 // Auth Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
