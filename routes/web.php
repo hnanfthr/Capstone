@@ -19,9 +19,6 @@ Route::get('/catalog', [StorefrontController::class, 'catalog'])->name('storefro
 Route::get('/product/{product}', [StorefrontController::class, 'show'])->name('storefront.show');
 Route::post('/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
 
-Route::get('/track-order', [StorefrontController::class, 'track'])->name('storefront.track');
-Route::post('/track-order', [StorefrontController::class, 'trackOrder'])->name('storefront.trackOrder');
-
     // Web Cart and Checkout have been deprecated in favor of WA Pre-Order
 
 // Auth Routes

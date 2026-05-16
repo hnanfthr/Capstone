@@ -129,11 +129,7 @@
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item me-3">
-                    <a class="nav-link fw-bold text-dark" href="{{ route('storefront.track') }}">
-                        <i class="bi bi-search"></i> Lacak Pesanan
-                    </a>
-                </li>
+                <!-- Cart and Track disabled -->
 
             </ul>
         </div>
@@ -158,11 +154,6 @@
             <i class="bi bi-grid-fill fs-5 d-block mb-1"></i>
             <span style="font-size: 0.7rem; font-weight: 500;">Katalog</span>
         </a>
-        <a href="{{ route('storefront.track') }}" class="text-decoration-none text-center flex-fill pb-1 {{ request()->routeIs('storefront.track') ? 'text-primary' : 'text-muted' }}" style="color: {{ request()->routeIs('storefront.track') ? 'var(--accent-color) !important' : '' }}">
-            <i class="bi bi-search fs-5 d-block mb-1"></i>
-            <span style="font-size: 0.7rem; font-weight: 500;">Lacak</span>
-        </a>
-
     </div>
 </nav>
 

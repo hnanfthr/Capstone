@@ -57,25 +57,4 @@ class StorefrontController extends Controller
         return view('storefront.show', compact('product', 'waNumber'));
     }
 
-    public function track()
-    {
-        return view('storefront.track');
-    }
-
-    public function trackOrder(Request $request)
-    {
-        $request->validate([
-            'search' => 'required|string',
-        ]);
-
-        $search = $request->search;
-        
-        $orders = Order::with('items.product')
-            ->where('order_no', $search)
-            ->orWhere('whatsapp_number', $search)
-            ->latest()
-            ->get();
-
-        return view('storefront.track', compact('orders', 'search'));
-    }
 }
