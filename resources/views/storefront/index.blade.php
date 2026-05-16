@@ -49,17 +49,12 @@
 </div>
 @else
 <!-- Default Hero if no banners -->
-<div class="row align-items-center mb-5 fade-in-up py-4 py-lg-5">
-    <div class="col-lg-6 mb-4 mb-lg-0 text-center text-lg-start">
+<div class="row align-items-center justify-content-center mb-5 fade-in-up py-5">
+    <div class="col-lg-8 text-center">
         <h1 class="font-script display-3 text-dark mb-2">Welcome to <span class="text-warning">Hassan's Koekjes</span></h1>
-        <h2 class="fw-bold mb-3 display-4"><span class="brush-accent">Premium Bakery</span></h2>
-        <p class="lead text-muted mb-4">Sajian kue kering premium dengan resep otentik pilihan keluarga. Renyah, lezat, dan dibuat dengan sepenuh hati untuk momen spesial Anda.</p>
-        <a href="#katalog" class="btn btn-theme btn-lg px-5 shadow-sm rounded-pill">Lihat Menu</a>
-    </div>
-    <div class="col-lg-6 text-center">
-        <div class="bg-white rounded-circle shadow-lg d-flex align-items-center justify-content-center mx-auto" style="width: 300px; height: 300px; border: 8px solid white;">
-            <i class="bi bi-shop text-warning" style="font-size: 6rem;"></i>
-        </div>
+        <h2 class="fw-bold mb-4 display-4"><span class="brush-accent">Premium Bakery</span></h2>
+        <p class="lead text-muted mb-4 mx-auto" style="max-width: 600px;">Sajian kue kering premium dengan resep otentik pilihan keluarga. Renyah, lezat, dan dibuat dengan sepenuh hati untuk momen spesial Anda.</p>
+        <a href="#katalog" class="btn btn-theme btn-lg px-5 shadow-sm rounded-pill mt-2">Lihat Menu</a>
     </div>
 </div>
 @endif
