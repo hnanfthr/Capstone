@@ -1,6 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
+
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<style>
+    .select2-container--bootstrap-5 .select2-selection {
+        border: none;
+        background-color: #f8f9fa; /* bg-light */
+        padding: 0.375rem 0.75rem;
+        min-height: 38px;
+    }
+    .select2-container--bootstrap-5 .select2-dropdown {
+        border-color: #dee2e6;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+</style>
+@endpush
+
 <div class="row g-4">
     <!-- Form Pencatatan Produksi -->
     <div class="col-lg-4 mb-4">
@@ -22,7 +41,7 @@
                 <form action="{{ route('productions.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <select name="product_id" class="form-select bg-light border-0" required>
+                        <select name="product_id" class="form-select bg-light border-0 select2-product" required>
                             <option value="">-- Pilih Kue --</option>
                             @foreach($products as $kategori => $groupedProducts)
                                 <optgroup label="{{ $kategori }}">
@@ -146,4 +165,20 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select2-product').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: "-- Pilih Kue --",
+            dropdownParent: $('.select2-product').parent()
+        });
+    });
+</script>
+@endpush
+
 @endsection
