@@ -13,14 +13,26 @@
             <form action="{{ route('storefront.catalog') }}" method="GET" class="card border-0 shadow-sm rounded-pill p-2">
                 <div class="row g-2 align-items-center">
                     <div class="col-md-4">
-                        <select name="category" class="form-select border-0 bg-transparent fw-bold text-dark px-4" onchange="this.form.submit()">
-                            <option value="all">Semua Kategori</option>
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat }}" {{ request('category') == $cat ? 'selected' : '' }}>
-                                    {{ $cat }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <div class="dropdown">
+                            <button class="btn btn-transparent dropdown-toggle border-0 fw-bold w-100 text-start px-4 text-dark shadow-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ request('category') && request('category') != 'all' ? request('category') : 'Semua Kategori' }}
+                            </button>
+                            <ul class="dropdown-menu w-100 border-0 shadow rounded-4 mt-2 p-2">
+                                <li>
+                                    <a class="dropdown-item rounded-3 {{ request('category', 'all') == 'all' ? 'active' : '' }}" href="{{ route('storefront.catalog', ['category' => 'all', 'search' => request('search')]) }}">
+                                        Semua Kategori
+                                    </a>
+                                </li>
+                                @foreach($categories as $cat)
+                                    <li>
+                                        <a class="dropdown-item rounded-3 {{ request('category') == $cat ? 'active' : '' }}" href="{{ route('storefront.catalog', ['category' => $cat, 'search' => request('search')]) }}">
+                                            {{ $cat }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <input type="hidden" name="category" value="{{ request('category', 'all') }}">
                     </div>
                     <div class="col-md-6 border-start">
                         <div class="input-group">

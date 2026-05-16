@@ -168,6 +168,16 @@
             box-shadow: none;
             color: #ccc;
         }
+
+        /* Dropdown custom styles */
+        .dropdown-item.active, .dropdown-item:active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        .dropdown-item:hover {
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+        }
         
     </style>
     <!-- Swiper CSS -->
