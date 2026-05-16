@@ -32,7 +32,7 @@
                     @csrf
                     <div class="mb-3">
                         <label class="form-label fw-bold small text-muted">Pilih Kue</label>
-                        <select name="product_id" class="form-select bg-light border-0" required>
+                        <select name="product_id" class="form-select bg-light border-0 premium-select" required>
                             <option value="">-- Pilih --</option>
                             @foreach($products as $p)
                                 <option value="{{ $p->id }}">{{ $p->nama }} (Sisa Stok: {{ $p->stok }})</option>

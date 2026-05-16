@@ -56,7 +56,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-muted small fw-bold">Status Pesanan</label>
-                        <select name="status" class="form-select bg-light border-0">
+                        <select name="status" class="form-select bg-light border-0 premium-select">
                             <option value="Pending" selected>Pending</option>
                             <option value="Sudah Diambil">Sudah Diambil</option>
                             <option value="Dikirim">Dikirim</option>

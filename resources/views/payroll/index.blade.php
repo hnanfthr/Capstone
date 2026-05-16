@@ -19,7 +19,10 @@
         <form action="{{ route('payroll.index') }}" method="GET" class="row g-3 align-items-end">
             <div class="col-md-3">
                 <label for="date" class="form-label fw-bold small text-muted">Tanggal</label>
-                <input type="date" id="date" name="date" class="form-control bg-light border-0" value="{{ $date }}">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-0"><i class="bi bi-calendar"></i></span>
+                    <input type="text" id="date" name="date" class="form-control bg-light border-0 premium-date" value="{{ $date }}">
+                </div>
             </div>
             <div class="col-md-4">
                 <label for="quantity" class="form-label fw-bold small text-muted">Kuantitas Toples (Total)</label>

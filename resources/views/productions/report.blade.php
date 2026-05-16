@@ -57,9 +57,12 @@
                             <label class="form-label text-muted small fw-medium">Jumlah (Toples)</label>
                             <input type="number" name="quantity" class="form-control bg-light border-0" min="1" required>
                         </div>
-                        <div class="col-6 mb-3">
-                            <label class="form-label text-muted small fw-medium">Tanggal Produksi</label>
-                            <input type="date" name="production_date" class="form-control bg-light border-0" value="{{ date('Y-m-d') }}" required>
+                        <div class="col-md-6 mb-3">
+                            <label for="date" class="form-label text-muted small fw-medium">Tanggal Produksi</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="bi bi-calendar"></i></span>
+                                <input type="text" id="date" name="production_date" class="form-control bg-light border-0 premium-date" value="{{ date('Y-m-d') }}" required>
+                            </div>
                         </div>
                     </div>
                     <div class="mb-4">
@@ -84,9 +87,9 @@
                 <form action="{{ route('productions.report') }}" method="GET" class="d-flex flex-column flex-sm-row gap-2">
                     <div class="input-group input-group-sm shadow-sm rounded-3 overflow-hidden">
                         <span class="input-group-text bg-light border-0"><i class="bi bi-calendar"></i></span>
-                        <input type="date" name="start_date" class="form-control border-0 bg-light" value="{{ request('start_date') }}">
+                        <input type="text" name="start_date" class="form-control border-0 bg-light premium-date" value="{{ request('start_date') }}" placeholder="Start Date">
                         <span class="input-group-text bg-light border-0">-</span>
-                        <input type="date" name="end_date" class="form-control border-0 bg-light" value="{{ request('end_date') }}">
+                        <input type="text" name="end_date" class="form-control border-0 bg-light premium-date" value="{{ request('end_date') }}" placeholder="End Date">
                         <button type="submit" class="btn btn-dark px-3">Filter</button>
                     </div>
                     @if(request('start_date') || request('end_date'))

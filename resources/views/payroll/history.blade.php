@@ -22,14 +22,14 @@
             <div class="col-md-3">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-light border-0"><i class="bi bi-calendar"></i></span>
-                    <input type="date" name="start_date" class="form-control border-0 bg-light" value="{{ request('start_date') }}" required>
+                    <input type="text" name="start_date" class="form-control border-0 bg-light premium-date" value="{{ request('start_date') }}" placeholder="Start Date" required>
                 </div>
             </div>
             <div class="col-md-auto text-center text-muted">s/d</div>
             <div class="col-md-3">
                 <div class="input-group input-group-sm">
                     <span class="input-group-text bg-light border-0"><i class="bi bi-calendar"></i></span>
-                    <input type="date" name="end_date" class="form-control border-0 bg-light" value="{{ request('end_date') }}" required>
+                    <input type="text" name="end_date" class="form-control border-0 bg-light premium-date" value="{{ request('end_date') }}" placeholder="End Date" required>
                 </div>
             </div>
             <div class="col-md-auto">

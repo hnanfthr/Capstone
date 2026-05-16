@@ -57,7 +57,7 @@
                         <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" class="d-flex gap-2">
                             @csrf
                             @method('PATCH')
-                            <select name="status" class="form-select form-select-sm border-0 bg-light" required>
+                            <select name="status" class="form-select form-select-sm border-0 bg-light premium-select" style="min-width: 140px;" required>
                                 <option value="Pending" {{ $order->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                                 <option value="Sudah Diambil" {{ $order->status == 'Sudah Diambil' ? 'selected' : '' }}>Sudah Diambil</option>
                                 <option value="Dikirim" {{ $order->status == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
@@ -121,7 +121,7 @@
                 <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" class="d-flex gap-2">
                     @csrf
                     @method('PATCH')
-                    <select name="status" class="form-select border-0 bg-light" required>
+                    <select name="status" class="form-select border-0 bg-light premium-select" required>
                         <option value="Pending" {{ $order->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                         <option value="Sudah Diambil" {{ $order->status == 'Sudah Diambil' ? 'selected' : '' }}>Sudah Diambil</option>
                         <option value="Dikirim" {{ $order->status == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>

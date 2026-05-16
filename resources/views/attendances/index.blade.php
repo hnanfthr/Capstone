@@ -16,7 +16,10 @@
         </div>
         <form action="{{ route('attendances.index') }}" method="GET" class="d-flex align-items-center gap-2 bg-light p-2 rounded-3 border">
             <label for="date" class="form-label mb-0 fw-bold small text-muted px-2">Tanggal:</label>
-            <input type="date" id="date" name="date" class="form-control border-0 bg-white shadow-sm" value="{{ $date }}" onchange="this.form.submit()">
+            <div class="input-group input-group-sm" style="max-width: 200px;">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar"></i></span>
+                <input type="text" id="date" name="date" class="form-control border-start-0 premium-date" value="{{ $date }}" onchange="this.form.submit()">
+            </div>
         </form>
     </div>
 </div>

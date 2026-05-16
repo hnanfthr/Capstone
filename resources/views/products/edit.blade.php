@@ -34,7 +34,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Kategori</label>
-                <select name="kategori" class="form-select" required>
+                <select name="kategori" class="form-select premium-select" required>
                     <option value="">Pilih Kategori</option>
                     <option value="Wijsman" {{ old('kategori', $product->kategori) == 'Wijsman' ? 'selected' : '' }}>Wijsman</option>
                     <option value="Hantaran" {{ old('kategori', $product->kategori) == 'Hantaran' ? 'selected' : '' }}>Hantaran</option>
