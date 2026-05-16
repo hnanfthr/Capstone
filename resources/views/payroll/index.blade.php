@@ -6,6 +6,11 @@
         <h3 class="fw-bold text-dark mb-1"><i class="bi bi-cash-stack text-primary me-2"></i> Perhitungan Gaji</h3>
         <p class="text-muted small mb-0">Hitung upah harian secara proporsional berdasarkan total jam kerja.</p>
     </div>
+    <div>
+        <a href="{{ route('payroll.history') }}" class="btn btn-outline-dark rounded-pill fw-bold px-4">
+            <i class="bi bi-clock-history me-1"></i> Riwayat Penggajian
+        </a>
+    </div>
 </div>
 
 <!-- Form Perhitungan -->
@@ -156,4 +161,30 @@
         </div>
     @endforelse
 </div>
+
+@if(count($payrollData) > 0)
+<div class="card border-0 shadow-sm rounded-4 mt-4 bg-white">
+    <div class="card-body p-4 text-center">
+        <h5 class="fw-bold mb-3">Simpan Data Penggajian</h5>
+        <p class="text-muted small mb-4">Pastikan hasil hitungan di atas sudah benar sebelum menyimpan ke riwayat.</p>
+        <form action="{{ route('payroll.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="date" value="{{ $date }}">
+            <input type="hidden" name="rate" value="{{ $rate }}">
+            <input type="hidden" name="quantity" value="{{ $quantity }}">
+            
+            @foreach($attendances as $index => $att)
+                <input type="hidden" name="employees[]" value="{{ $att->employee->id }}">
+                <input type="hidden" name="hours[]" value="{{ $payrollData[$index]['hours_worked'] }}">
+                <input type="hidden" name="wages[]" value="{{ $payrollData[$index]['wage'] }}">
+            @endforeach
+            
+            <button type="submit" class="btn btn-success btn-lg rounded-pill px-5 fw-bold shadow-sm">
+                <i class="bi bi-save2 me-2"></i> Simpan ke Riwayat
+            </button>
+        </form>
+    </div>
+</div>
+@endif
+
 @endsection

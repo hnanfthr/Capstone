@@ -46,6 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/attendances/clock-out', [AttendanceController::class, 'clockOut'])->name('attendances.clockOut');
     
     Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');
+    Route::post('/payroll/store', [PayrollController::class, 'store'])->name('payroll.store');
+    Route::get('/payroll/history', [PayrollController::class, 'history'])->name('payroll.history');
+    Route::get('/payroll/export', [PayrollController::class, 'export'])->name('payroll.export');
     
     // Website Settings & Banners
     Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
