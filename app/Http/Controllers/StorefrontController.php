@@ -43,12 +43,26 @@ class StorefrontController extends Controller
         return view('storefront.index', compact('bestSellers', 'topRated', 'banners', 'settings'));
     }
 
-    public function catalog()
+    public function catalog(Request $request)
     {
         $dbSettings = Setting::all()->pluck('value', 'key');
         $waNumber = $dbSettings['whatsapp_number'] ?? '6281339263950';
-        $productsByCategory = Product::all()->groupBy('kategori');
-        return view('storefront.catalog', compact('productsByCategory', 'waNumber'));
+        
+        $query = Product::query();
+        
+        if ($request->filled('search')) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        }
+        
+        if ($request->filled('category') && $request->category !== 'all') {
+            $query->where('kategori', $request->category);
+        }
+        
+        $products = $query->orderBy('nama', 'asc')->paginate(12)->withQueryString();
+        
+        $categories = Product::select('kategori')->distinct()->pluck('kategori');
+        
+        return view('storefront.catalog', compact('products', 'categories', 'waNumber'));
     }
 
     public function show(Product $product)
