@@ -3,19 +3,21 @@
 @section('content')
 
 @push('styles')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 <style>
-    .select2-container--bootstrap-5 .select2-selection {
-        border: none;
-        background-color: #f8f9fa; /* bg-light */
-        padding: 0.375rem 0.75rem;
-        min-height: 38px;
+    .product-category-header {
+        background-color: #f8f9fa;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid #dee2e6;
     }
-    .select2-container--bootstrap-5 .select2-dropdown {
-        border-color: #dee2e6;
-        border-radius: 0.5rem;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    .product-item {
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+    .product-item:hover {
+        background-color: rgba(230, 92, 0, 0.08); /* admin-primary with opacity */
+        color: #e65c00;
     }
 </style>
 @endpush
@@ -41,16 +43,12 @@
                 <form action="{{ route('productions.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <select name="product_id" class="form-select bg-light border-0 select2-product" required>
-                            <option value="">-- Pilih Kue --</option>
-                            @foreach($products as $kategori => $groupedProducts)
-                                <optgroup label="{{ $kategori }}">
-                                    @foreach($groupedProducts as $product)
-                                        <option value="{{ $product->id }}">{{ $product->nama }}</option>
-                                    @endforeach
-                                </optgroup>
-                            @endforeach
-                        </select>
+                        <label class="form-label text-muted small fw-medium">Kue yang Diproduksi</label>
+                        <input type="hidden" name="product_id" id="selected_product_id" required>
+                        <button type="button" class="btn btn-light border-0 w-100 text-start d-flex justify-content-between align-items-center rounded-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#productModal" id="btnSelectProduct">
+                            <span class="text-muted"><i class="bi bi-box-seam me-2"></i>-- Klik untuk Pilih Kue --</span>
+                            <i class="bi bi-chevron-down text-muted"></i>
+                        </button>
                     </div>
                     <div class="row">
                         <div class="col-6 mb-3">
@@ -169,16 +167,130 @@
     </div>
 </div>
 
+<!-- Modal Pilih Kue -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold" id="productModalLabel"><i class="bi bi-box-seam text-primary me-2"></i>Pilih Kue</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3 shadow-sm rounded-3 overflow-hidden">
+                    <span class="input-group-text bg-white border-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" class="form-control border-0 px-2" id="searchProduct" placeholder="Cari nama kue...">
+                </div>
+                
+                <div class="list-group list-group-flush rounded-3 border" id="productListContainer">
+                    @foreach($products as $kategori => $groupedProducts)
+                        <div class="product-category-group">
+                            <div class="list-group-item product-category-header text-muted fw-bold small text-uppercase py-2">
+                                {{ $kategori }}
+                            </div>
+                            @foreach($groupedProducts as $product)
+                                <button type="button" class="list-group-item list-group-item-action product-item d-flex align-items-center py-3 border-bottom" data-id="{{ $product->id }}" data-name="{{ $product->nama }}">
+                                    <div class="bg-light rounded-circle d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-cake2 text-secondary"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-semibold text-dark">{{ $product->nama }}</h6>
+                                        <small class="text-muted">Sisa Stok: {{ $product->stok }}</small>
+                                    </div>
+                                </button>
+                            @endforeach
+                        </div>
+                    @endforeach
+                </div>
+                <div id="noProductFound" class="text-center py-4 d-none">
+                    <i class="bi bi-search fs-1 text-muted mb-2 d-block"></i>
+                    <span class="text-muted">Kue tidak ditemukan.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('.select2-product').select2({
-            theme: 'bootstrap-5',
-            width: '100%',
-            placeholder: "-- Pilih Kue --",
-            dropdownParent: $('.select2-product').parent()
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchProduct');
+        const productItems = document.querySelectorAll('.product-item');
+        const categoryGroups = document.querySelectorAll('.product-category-group');
+        const noProductFound = document.getElementById('noProductFound');
+        const btnSelectProduct = document.getElementById('btnSelectProduct');
+        const hiddenProductId = document.getElementById('selected_product_id');
+
+        // Search Functionality
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            let totalVisibleItems = 0;
+
+            categoryGroups.forEach(group => {
+                let hasVisibleChild = false;
+                const itemsInGroup = group.querySelectorAll('.product-item');
+
+                itemsInGroup.forEach(item => {
+                    const productName = item.getAttribute('data-name').toLowerCase();
+                    if (productName.includes(searchTerm)) {
+                        item.classList.remove('d-none');
+                        item.classList.add('d-flex');
+                        hasVisibleChild = true;
+                        totalVisibleItems++;
+                    } else {
+                        item.classList.remove('d-flex');
+                        item.classList.add('d-none');
+                    }
+                });
+
+                // Hide category header if no items match
+                const header = group.querySelector('.product-category-header');
+                if (hasVisibleChild) {
+                    header.style.display = 'block';
+                } else {
+                    header.style.display = 'none';
+                }
+            });
+
+            // Show 'no results' message
+            if (totalVisibleItems === 0) {
+                noProductFound.classList.remove('d-none');
+            } else {
+                noProductFound.classList.add('d-none');
+            }
+        });
+
+        // Select Product
+        productItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+
+                // Update Form
+                hiddenProductId.value = id;
+                btnSelectProduct.innerHTML = `<span class="text-dark fw-semibold"><i class="bi bi-box-seam text-primary me-2"></i>${name}</span> <i class="bi bi-check-circle-fill text-success"></i>`;
+                
+                // Hide Modal
+                const modalEl = document.getElementById('productModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+
+                // Clear search
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input')); // Reset list
+            });
+        });
+        
+        // Form Validation to ensure product is selected
+        const form = document.querySelector('form[action="{{ route('productions.store') }}"]');
+        form.addEventListener('submit', function(e) {
+            if (!hiddenProductId.value) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Silakan pilih kue terlebih dahulu!',
+                });
+            }
         });
     });
 </script>
