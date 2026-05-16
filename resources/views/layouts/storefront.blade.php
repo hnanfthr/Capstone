@@ -134,6 +134,40 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
         }
+
+        /* Custom Pagination */
+        .pagination {
+            gap: 5px;
+        }
+        .pagination .page-item .page-link {
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+            background-color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .pagination .page-item .page-link:hover {
+            background-color: var(--bg-color);
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+        .pagination .page-item.active .page-link {
+            background-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(139, 90, 43, 0.3);
+        }
+        .pagination .page-item.disabled .page-link {
+            background-color: transparent;
+            box-shadow: none;
+            color: #ccc;
+        }
         
     </style>
     <!-- Swiper CSS -->
