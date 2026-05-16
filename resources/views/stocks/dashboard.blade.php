@@ -17,6 +17,7 @@
     </div>
 </div>
 
+@push('modals')
 <!-- Modal Kurangi Stok Manual -->
 <div class="modal fade" id="adjustStockModal" tabindex="-1" aria-labelledby="adjustStockModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -52,6 +53,7 @@
         </div>
     </div>
 </div>
+@endpush
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
     @forelse($products as $product)
