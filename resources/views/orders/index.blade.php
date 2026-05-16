@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="fw-bold text-dark">Manajemen Pesanan</h3>
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <h3 class="fw-bold text-dark mb-0">Manajemen Pesanan</h3>
+    <a href="{{ route('orders.create') }}" class="btn btn-primary rounded-pill fw-bold px-4 shadow-sm">
+        <i class="bi bi-plus-lg me-1"></i> Buat Pesanan Baru
+    </a>
 </div>
 
 <!-- Desktop Table View (Hidden on mobile) -->

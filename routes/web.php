@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
     Route::post('/productions', [ProductionController::class, 'store'])->name('productions.store');
