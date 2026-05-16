@@ -42,4 +42,10 @@ class ProductionController extends Controller
 
         return view('productions.report', compact('productions', 'products'));
     }
+
+    public function print(Production $production)
+    {
+        $production->load('product');
+        return view('productions.print', compact('production'));
+    }
 }

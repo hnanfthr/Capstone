@@ -93,7 +93,14 @@
                                 <td class="text-center">
                                     <span class="badge bg-success bg-opacity-10 text-success border border-success-subtle rounded-pill px-3">+{{ $prod->quantity }}</span>
                                 </td>
-                                <td class="pe-4 text-muted small">{{ $prod->notes ?? '-' }}</td>
+                                <td class="pe-4 text-muted small">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>{{ $prod->notes ?? '-' }}</span>
+                                        <a href="{{ route('productions.print', $prod->id) }}" target="_blank" class="btn btn-sm btn-outline-dark rounded-circle" title="Cetak Label Batch">
+                                            <i class="bi bi-printer"></i>
+                                        </a>
+                                    </div>
+                                </td>
                             </tr>
                             @empty
                             <tr>
@@ -117,10 +124,13 @@
                                 </div>
                                 <h6 class="fw-bold text-dark mb-2">{{ $prod->product ? $prod->product->nama : 'Produk Dihapus' }}</h6>
                                 @if($prod->notes)
-                                    <div class="bg-white p-2 rounded-3 small text-muted border">
+                                    <div class="bg-white p-2 rounded-3 small text-muted border mb-2">
                                         <i class="bi bi-info-circle me-1"></i> {{ $prod->notes }}
                                     </div>
                                 @endif
+                                <a href="{{ route('productions.print', $prod->id) }}" target="_blank" class="btn btn-sm btn-outline-dark w-100 rounded-3">
+                                    <i class="bi bi-printer me-1"></i> Cetak Label Expired
+                                </a>
                             </div>
                         </div>
                     @empty
