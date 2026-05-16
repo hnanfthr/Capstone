@@ -37,14 +37,7 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
-        // Checkbox tidak akan terkirim jika tidak dicentang, jadi kita paksa atur ke 0 jika tidak ada
         $settings = $request->except(['_token', '_method']);
-        
-        if (!isset($settings['promo_is_active'])) {
-            $settings['promo_is_active'] = '0';
-        } else {
-            $settings['promo_is_active'] = '1';
-        }
 
         foreach ($settings as $key => $value) {
             Setting::updateOrCreate(
