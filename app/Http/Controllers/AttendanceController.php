@@ -100,11 +100,22 @@ class AttendanceController extends Controller
             fputcsv($file, ['Tanggal', 'Nama Karyawan', 'Jam Masuk', 'Jam Keluar', 'Total Jam Kerja']);
 
             foreach ($attendances as $row) {
-                $hoursWorked = 0;
+                $hoursWorkedFormatted = '-';
                 if ($row->clock_in && $row->clock_out) {
                     $in = Carbon::parse($row->clock_in);
                     $out = Carbon::parse($row->clock_out);
-                    $hoursWorked = round($in->diffInMinutes($out) / 60, 2);
+                    $diffInMinutes = $in->diffInMinutes($out);
+                    
+                    $hours = floor($diffInMinutes / 60);
+                    $minutes = $diffInMinutes % 60;
+                    
+                    if ($hours > 0 && $minutes > 0) {
+                        $hoursWorkedFormatted = "{$hours} Jam {$minutes} Menit";
+                    } elseif ($hours > 0) {
+                        $hoursWorkedFormatted = "{$hours} Jam";
+                    } else {
+                        $hoursWorkedFormatted = "{$minutes} Menit";
+                    }
                 }
 
                 fputcsv($file, [
@@ -112,7 +123,7 @@ class AttendanceController extends Controller
                     $row->employee ? $row->employee->name : 'N/A',
                     $row->clock_in ?? '-',
                     $row->clock_out ?? '-',
-                    $hoursWorked
+                    $hoursWorkedFormatted
                 ]);
             }
 

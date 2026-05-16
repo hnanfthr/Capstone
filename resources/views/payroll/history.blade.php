@@ -72,7 +72,21 @@
                                 <span class="fw-bold text-dark">{{ $payroll->employee ? $payroll->employee->name : 'N/A' }}</span>
                             </div>
                         </td>
-                        <td class="text-center"><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-3 rounded-pill">{{ number_format($payroll->hours_worked, 2) }} Jam</span></td>
+                        <td class="text-center">
+                            @php
+                                $h = floor($payroll->hours_worked);
+                                $m = round(($payroll->hours_worked - $h) * 60);
+                                $hoursStr = '';
+                                if ($h > 0 && $m > 0) {
+                                    $hoursStr = "{$h} Jam {$m} Menit";
+                                } elseif ($h > 0) {
+                                    $hoursStr = "{$h} Jam";
+                                } else {
+                                    $hoursStr = "{$m} Menit";
+                                }
+                            @endphp
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-3 rounded-pill">{{ $hoursStr }}</span>
+                        </td>
                         <td class="text-center"><span class="text-dark">{{ $payroll->total_quantity }} Toples</span></td>
                         <td class="text-center"><span class="text-muted">Rp {{ number_format($payroll->rate_per_toples, 0, ',', '.') }}</span></td>
                         <td class="text-end pe-4">

@@ -38,6 +38,17 @@ class PayrollController extends Controller
             // Hitung selisih jam kerja dalam format desimal (misal 11:30 jadi 11.5)
             $diffInMinutes = $in->diffInMinutes($out);
             $hoursWorked = $diffInMinutes / 60;
+            
+            $h = floor($hoursWorked);
+            $m = round(($hoursWorked - $h) * 60);
+            $hoursStr = '';
+            if ($h > 0 && $m > 0) {
+                $hoursStr = "{$h} Jam {$m} Menit";
+            } elseif ($h > 0) {
+                $hoursStr = "{$h} Jam";
+            } else {
+                $hoursStr = "{$m} Menit";
+            }
 
             $totalHours += $hoursWorked;
 
@@ -46,6 +57,7 @@ class PayrollController extends Controller
                 'clock_in' => $att->clock_in,
                 'clock_out' => $att->clock_out,
                 'hours_worked' => $hoursWorked,
+                'hours_worked_str' => $hoursStr,
             ];
         }
 
@@ -60,9 +72,20 @@ class PayrollController extends Controller
                 $data['wage'] = 0;
             }
         }
+        
+        $totalHoursFloor = floor($totalHours);
+        $totalMins = round(($totalHours - $totalHoursFloor) * 60);
+        $totalHoursStr = '';
+        if ($totalHoursFloor > 0 && $totalMins > 0) {
+            $totalHoursStr = "{$totalHoursFloor} Jam {$totalMins} Menit";
+        } elseif ($totalHoursFloor > 0) {
+            $totalHoursStr = "{$totalHoursFloor} Jam";
+        } else {
+            $totalHoursStr = "{$totalMins} Menit";
+        }
 
         return view('payroll.index', compact(
-            'date', 'rate', 'quantity', 'totalWage', 'totalHours', 'payrollData', 'attendances'
+            'date', 'rate', 'quantity', 'totalWage', 'totalHoursStr', 'totalHours', 'payrollData', 'attendances'
         ));
     }
 
@@ -142,10 +165,21 @@ class PayrollController extends Controller
             fputcsv($file, ['Tanggal', 'Nama Karyawan', 'Jam Kerja', 'Total Toples Harian', 'Rate Per Toples', 'Upah Diterima']);
 
             foreach ($payrolls as $row) {
+                $h = floor($row->hours_worked);
+                $m = round(($row->hours_worked - $h) * 60);
+                $hoursStr = '';
+                if ($h > 0 && $m > 0) {
+                    $hoursStr = "{$h} Jam {$m} Menit";
+                } elseif ($h > 0) {
+                    $hoursStr = "{$h} Jam";
+                } else {
+                    $hoursStr = "{$m} Menit";
+                }
+
                 fputcsv($file, [
                     $row->date,
                     $row->employee ? $row->employee->name : 'N/A',
-                    $row->hours_worked,
+                    $hoursStr,
                     $row->total_quantity,
                     $row->rate_per_toples,
                     $row->wage

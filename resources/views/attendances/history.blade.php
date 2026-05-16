@@ -90,9 +90,20 @@
                                 @php
                                     $in = \Carbon\Carbon::parse($att->clock_in);
                                     $out = \Carbon\Carbon::parse($att->clock_out);
-                                    $hoursWorked = round($in->diffInMinutes($out) / 60, 2);
+                                    $diffInMinutes = $in->diffInMinutes($out);
+                                    $hours = floor($diffInMinutes / 60);
+                                    $minutes = $diffInMinutes % 60;
+                                    
+                                    $hoursWorkedStr = '';
+                                    if ($hours > 0 && $minutes > 0) {
+                                        $hoursWorkedStr = "{$hours} Jam {$minutes} Menit";
+                                    } elseif ($hours > 0) {
+                                        $hoursWorkedStr = "{$hours} Jam";
+                                    } else {
+                                        $hoursWorkedStr = "{$minutes} Menit";
+                                    }
                                 @endphp
-                                <span class="fw-bold text-primary">{{ $hoursWorked }} Jam</span>
+                                <span class="fw-bold text-primary">{{ $hoursWorkedStr }}</span>
                             @else
                                 <span class="text-muted">-</span>
                             @endif

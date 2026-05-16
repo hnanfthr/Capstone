@@ -52,7 +52,7 @@
                 </div>
                 <div>
                     <p class="text-muted small fw-medium mb-1">Total Jam Kerja Crew</p>
-                    <h3 class="fw-bold mb-0 text-dark">{{ number_format($totalHours, 2) }} <span class="fs-6 text-muted">Jam</span></h3>
+                    <h3 class="fw-bold mb-0 text-dark">{{ $totalHoursStr ?? '0 Jam' }}</h3>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
                     <th class="ps-4">Nama Crew</th>
                     <th class="text-center">Jam Masuk</th>
                     <th class="text-center">Jam Keluar</th>
-                    <th class="text-center">Total Jam (Desimal)</th>
+                    <th class="text-center">Total Jam</th>
                     <th class="text-end pe-4">Upah Diterima</th>
                 </tr>
             </thead>
@@ -98,7 +98,7 @@
                     </td>
                     <td class="text-center"><span class="badge bg-light text-dark border">{{ \Carbon\Carbon::parse($data['clock_in'])->format('H:i') }}</span></td>
                     <td class="text-center"><span class="badge bg-light text-dark border">{{ \Carbon\Carbon::parse($data['clock_out'])->format('H:i') }}</span></td>
-                    <td class="text-center"><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-3 rounded-pill">{{ number_format($data['hours_worked'], 2) }} Jam</span></td>
+                    <td class="text-center"><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-3 rounded-pill">{{ $data['hours_worked_str'] }}</span></td>
                     <td class="text-end pe-4">
                         <span class="text-success fw-bold fs-6">Rp {{ number_format($data['wage'], 0, ',', '.') }}</span>
                     </td>
@@ -146,7 +146,7 @@
                     <div class="col-4">
                         <div class="bg-light p-2 rounded-3 text-center h-100 border border-primary-subtle">
                             <small class="text-primary d-block mb-1">Durasi</small>
-                            <span class="fw-bold text-primary small">{{ number_format($data['hours_worked'], 1) }} Jam</span>
+                            <span class="fw-bold text-primary small">{{ $data['hours_worked_str'] }}</span>
                         </div>
                     </div>
                 </div>
