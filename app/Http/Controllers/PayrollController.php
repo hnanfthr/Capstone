@@ -12,14 +12,11 @@ class PayrollController extends Controller
     public function index(Request $request)
     {
         $date = $request->input('date', date('Y-m-d'));
-        $profitShare = $request->input('profit_share', 15); // Default 15%
+        $rate = $request->input('rate', 15000); // Default Rp 15.000 per toples
         
-        // Cari total pemasukan dari pesanan yang berstatus 'Selesai' hari ini
-        $autoIncome = \App\Models\Order::whereDate('updated_at', $date)
-            ->where('status', 'Selesai')
-            ->sum('total_price');
-            
-        $totalIncome = $request->input('total_income', $autoIncome);
+        // Coba cari total kuantitas toples hari ini secara otomatis jika tidak ada input manual
+        $autoQuantity = \App\Models\Production::whereDate('production_date', $date)->sum('quantity');
+        $quantity = $request->input('quantity', $autoQuantity);
 
         // Ambil data absensi hari ini yang punya jam masuk dan keluar
         $attendances = Attendance::with('employee')
@@ -49,8 +46,8 @@ class PayrollController extends Controller
             ];
         }
 
-        // Hitung total bagi hasil yang dialokasikan
-        $totalWage = $totalIncome * ($profitShare / 100);
+        // Hitung total upah borongan
+        $totalWage = $quantity * $rate;
 
         // Hitung upah masing-masing secara proporsional
         foreach ($payrollData as &$data) {
@@ -62,7 +59,7 @@ class PayrollController extends Controller
         }
 
         return view('payroll.index', compact(
-            'date', 'profitShare', 'totalIncome', 'totalWage', 'totalHours', 'payrollData'
+            'date', 'rate', 'quantity', 'totalWage', 'totalHours', 'payrollData'
         ));
     }
 }

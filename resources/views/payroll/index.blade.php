@@ -17,13 +17,13 @@
                 <input type="date" id="date" name="date" class="form-control bg-light border-0" value="{{ $date }}">
             </div>
             <div class="col-md-4">
-                <label for="total_income" class="form-label fw-bold small text-muted">Total Pendapatan (Rp)</label>
-                <input type="number" id="total_income" name="total_income" class="form-control bg-light border-0" value="{{ $totalIncome }}" required>
-                <div class="form-text small"><i class="bi bi-info-circle me-1"></i>Otomatis dari pesanan "Selesai".</div>
+                <label for="quantity" class="form-label fw-bold small text-muted">Kuantitas Toples (Total)</label>
+                <input type="number" id="quantity" name="quantity" class="form-control bg-light border-0" value="{{ $quantity }}" required>
+                <div class="form-text small"><i class="bi bi-info-circle me-1"></i>Diisi otomatis dari dapur.</div>
             </div>
             <div class="col-md-3">
-                <label for="profit_share" class="form-label fw-bold small text-muted">Bagi Hasil Crew (%)</label>
-                <input type="number" id="profit_share" name="profit_share" class="form-control bg-light border-0" value="{{ $profitShare }}" step="0.1" required>
+                <label for="rate" class="form-label fw-bold small text-muted">Rate / Toples (Rp)</label>
+                <input type="number" id="rate" name="rate" class="form-control bg-light border-0" value="{{ $rate }}" required>
             </div>
             <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100 rounded-3 fw-bold shadow-sm">
@@ -56,7 +56,7 @@
                     <i class="bi bi-wallet2 fs-3"></i>
                 </div>
                 <div>
-                    <p class="text-muted small fw-medium mb-1">Alokasi Bagi Hasil ({{ $profitShare }}%)</p>
+                    <p class="text-muted small fw-medium mb-1">Total Upah (Qty x Rate)</p>
                     <h3 class="fw-bold mb-0 text-success">Rp {{ number_format($totalWage, 0, ',', '.') }}</h3>
                 </div>
             </div>
