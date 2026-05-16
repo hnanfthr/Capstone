@@ -22,11 +22,14 @@
                 <form action="{{ route('productions.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label class="form-label text-muted small fw-medium">Pilih Produk</label>
                         <select name="product_id" class="form-select bg-light border-0" required>
                             <option value="">-- Pilih Kue --</option>
-                            @foreach($products as $product)
-                                <option value="{{ $product->id }}">{{ $product->nama }}</option>
+                            @foreach($products as $kategori => $groupedProducts)
+                                <optgroup label="{{ $kategori }}">
+                                    @foreach($groupedProducts as $product)
+                                        <option value="{{ $product->id }}">{{ $product->nama }}</option>
+                                    @endforeach
+                                </optgroup>
                             @endforeach
                         </select>
                     </div>

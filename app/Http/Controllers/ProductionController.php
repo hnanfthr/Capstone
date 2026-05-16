@@ -38,7 +38,7 @@ class ProductionController extends Controller
         }
 
         $productions = $query->get();
-        $products = Product::all();
+        $products = Product::orderBy('nama')->get()->groupBy('kategori');
 
         return view('productions.report', compact('productions', 'products'));
     }
