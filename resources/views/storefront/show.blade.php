@@ -42,28 +42,20 @@
                     {{ $product->deskripsi ?? 'Belum ada deskripsi untuk produk ini.' }}
                 </p>
 
-                <div class="alert alert-light border d-flex justify-content-between align-items-center mb-4">
-                    <span class="text-muted">Sisa Stok Tersedia</span>
-                    <span class="fw-bold fs-5 {{ $product->stok < 5 ? 'text-danger' : 'text-success' }}">{{ $product->stok }} Toples</span>
+                <div class="alert alert-light border border-success d-flex flex-column align-items-center mb-4 p-4 text-center">
+                    <i class="bi bi-clock-history text-success mb-2" style="font-size: 2rem;"></i>
+                    <h5 class="fw-bold text-success mb-1">Pre-Order Tersedia</h5>
+                    <p class="text-muted small mb-0">Produk ini dipesan dengan sistem Made by Order (Fresh from oven).</p>
                 </div>
 
-                <form action="{{ route('cart.add') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <div class="row g-3 align-items-center">
-                        <div class="col-auto">
-                            <label class="col-form-label fw-bold">Kuantitas</label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="number" name="quantity" class="form-control text-center form-control-lg" value="1" min="1" max="{{ $product->stok }}" style="width: 100px;">
-                        </div>
-                        <div class="col">
-                            <button type="submit" class="btn btn-theme btn-lg w-100 fw-bold">
-                                <i class="bi bi-cart-plus me-2"></i> Tambah ke Keranjang
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                @php 
+                    $waMessage = "Halo Hassan's Koekjes, saya ingin memesan kue *" . $product->nama . "* (Rp " . number_format($product->harga, 0, ',', '.') . ").";
+                    $waLink = "https://wa.me/" . $waNumber . "?text=" . urlencode($waMessage);
+                @endphp
+                
+                <a href="{{ $waLink }}" target="_blank" class="btn btn-success btn-lg w-100 fw-bold rounded-pill mb-3">
+                    <i class="bi bi-whatsapp me-2"></i> Pre-Order via WhatsApp
+                </a>
             </div>
         </div>
     </div>

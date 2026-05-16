@@ -12,16 +12,14 @@ class StorefrontController extends Controller
 {
     public function index()
     {
-        $products = Product::where('stok', '>', 0)->get();
+        // Products query removed since we are fetching bestSellers and topRated directly
         
-        $bestSellers = Product::where('stok', '>', 0)
-            ->withSum('orderItems', 'quantity')
+        $bestSellers = Product::withSum('orderItems', 'quantity')
             ->orderByDesc('order_items_sum_quantity')
             ->take(4)
             ->get();
 
-        $topRated = Product::where('stok', '>', 0)
-            ->withAvg('reviews', 'rating')
+        $topRated = Product::withAvg('reviews', 'rating')
             ->orderByDesc('reviews_avg_rating')
             ->take(4)
             ->get();
@@ -37,6 +35,7 @@ class StorefrontController extends Controller
             'promo_desc' => $dbSettings['promo_desc'] ?? 'Beli 3 toples jenis apa saja, dapatkan potongan harga spesial dan Gratis Kartu Ucapan Premium untuk orang tersayang.',
             'promo_valid_until' => $dbSettings['promo_valid_until'] ?? 'Berlaku s.d akhir bulan',
             'promo_discount_text' => $dbSettings['promo_discount_text'] ?? '20%',
+            'whatsapp_number' => $dbSettings['whatsapp_number'] ?? '6281234567890',
         ];
 
         return view('storefront.index', compact('bestSellers', 'topRated', 'banners', 'settings'));
@@ -44,14 +43,18 @@ class StorefrontController extends Controller
 
     public function catalog()
     {
-        $productsByCategory = Product::where('stok', '>', 0)->get()->groupBy('kategori');
-        return view('storefront.catalog', compact('productsByCategory'));
+        $dbSettings = Setting::all()->pluck('value', 'key');
+        $waNumber = $dbSettings['whatsapp_number'] ?? '6281234567890';
+        $productsByCategory = Product::all()->groupBy('kategori');
+        return view('storefront.catalog', compact('productsByCategory', 'waNumber'));
     }
 
     public function show(Product $product)
     {
         $product->load('reviews');
-        return view('storefront.show', compact('product'));
+        $dbSettings = Setting::all()->pluck('value', 'key');
+        $waNumber = $dbSettings['whatsapp_number'] ?? '6281234567890';
+        return view('storefront.show', compact('product', 'waNumber'));
     }
 
     public function track()

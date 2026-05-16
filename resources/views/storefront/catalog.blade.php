@@ -53,14 +53,13 @@
                                             <p class="text-muted small mb-1">{{ $product->kategori }}</p>
                                             <p class="text-warning fw-bold mb-3 fs-5">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
                                             
-                                            <form action="{{ route('cart.add') }}" method="POST" class="mt-auto" onclick="event.stopPropagation();">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <input type="hidden" name="quantity" value="1">
-                                                <button type="submit" class="btn btn-outline-warning w-100 fw-bold rounded-pill">
-                                                    <i class="bi bi-cart-plus"></i> Masukkan Keranjang
-                                                </button>
-                                            </form>
+                                            @php 
+                                                $waMessage = "Halo Hassan's Koekjes, saya ingin memesan kue *" . $product->nama . "* (Rp " . number_format($product->harga, 0, ',', '.') . ").";
+                                                $waLink = "https://wa.me/" . $waNumber . "?text=" . urlencode($waMessage);
+                                            @endphp
+                                            <a href="{{ $waLink }}" target="_blank" class="btn btn-success w-100 fw-bold rounded-pill mt-auto" onclick="event.stopPropagation();">
+                                                <i class="bi bi-whatsapp"></i> Pre-Order via WA
+                                            </a>
                                         </div>
                                     </div>
                                 </a>

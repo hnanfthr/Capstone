@@ -134,16 +134,7 @@
                         <i class="bi bi-search"></i> Lacak Pesanan
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="btn btn-theme position-relative" href="{{ route('cart.index') }}">
-                        <i class="bi bi-cart3"></i> Keranjang
-                        @if(session('cart') && count(session('cart')) > 0)
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white">
-                                {{ count(session('cart')) }}
-                            </span>
-                        @endif
-                    </a>
-                </li>
+
             </ul>
         </div>
     </div>
@@ -171,17 +162,7 @@
             <i class="bi bi-search fs-5 d-block mb-1"></i>
             <span style="font-size: 0.7rem; font-weight: 500;">Lacak</span>
         </a>
-        <a href="{{ route('cart.index') }}" class="text-decoration-none text-center flex-fill pb-1 position-relative {{ request()->routeIs('cart.index') ? 'text-primary' : 'text-muted' }}" style="color: {{ request()->routeIs('cart.index') ? 'var(--accent-color) !important' : '' }}">
-            <div class="position-relative d-inline-block">
-                <i class="bi bi-cart3 fs-5 d-block mb-1"></i>
-                @if(session('cart') && count(session('cart')) > 0)
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white" style="font-size: 0.55rem; padding: 0.25em 0.4em;">
-                        {{ count(session('cart')) }}
-                    </span>
-                @endif
-            </div>
-            <span style="font-size: 0.7rem; font-weight: 500; display: block;">Keranjang</span>
-        </a>
+
     </div>
 </nav>
 
