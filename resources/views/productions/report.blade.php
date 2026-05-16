@@ -168,6 +168,7 @@
 </div>
 
 <!-- Modal Pilih Kue -->
+@push('modals')
 <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow rounded-4">
@@ -209,6 +210,7 @@
         </div>
     </div>
 </div>
+@endpush
 
 @push('scripts')
 <script>

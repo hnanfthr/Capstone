@@ -3,9 +3,14 @@
 @section('content')
 <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
     <h3 class="fw-bold text-dark mb-0">Manajemen Pesanan</h3>
-    <a href="{{ route('orders.create') }}" class="btn btn-primary rounded-pill fw-bold px-4 shadow-sm">
-        <i class="bi bi-plus-lg me-1"></i> Buat Pesanan Baru
-    </a>
+    <div class="d-flex gap-2">
+        <a href="{{ route('orders.history') }}" class="btn btn-outline-dark rounded-pill fw-bold px-4 shadow-sm">
+            <i class="bi bi-archive me-1"></i> Arsip Pesanan
+        </a>
+        <a href="{{ route('orders.create') }}" class="btn btn-primary rounded-pill fw-bold px-4 shadow-sm">
+            <i class="bi bi-plus-lg me-1"></i> Buat Pesanan
+        </a>
+    </div>
 </div>
 
 <!-- Desktop Table View (Hidden on mobile) -->

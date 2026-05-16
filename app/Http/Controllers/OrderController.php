@@ -12,7 +12,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::with('items.product')->latest()->get();
+        $orders = Order::with('items.product')->where('status', '!=', 'Selesai')->latest()->get();
         return view('orders.index', compact('orders'));
     }
 
@@ -90,5 +90,67 @@ class OrderController extends Controller
             \Illuminate\Support\Facades\DB::rollBack();
             return redirect()->back()->with('error', 'Gagal membuat pesanan: ' . $e->getMessage());
         }
+    }
+
+    public function history(Request $request)
+    {
+        $query = Order::with('items.product')->where('status', 'Selesai')->latest('updated_at');
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('updated_at', [$request->start_date . ' 00:00:00', $request->end_date . ' 23:59:59']);
+        }
+
+        $orders = $query->paginate(20)->withQueryString();
+
+        return view('orders.history', compact('orders'));
+    }
+
+    public function export(Request $request)
+    {
+        $query = Order::with('items.product')->where('status', 'Selesai')->latest('updated_at');
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('updated_at', [$request->start_date . ' 00:00:00', $request->end_date . ' 23:59:59']);
+        }
+
+        $orders = $query->get();
+
+        $filename = "arsip_pesanan_" . date('Ymd_His') . ".csv";
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $callback = function() use($orders) {
+            $file = fopen('php://output', 'w');
+            
+            // Kolom header CSV
+            fputcsv($file, ['No. Order', 'Tanggal Selesai', 'Nama Pelanggan', 'No WA', 'Total Pembayaran', 'Rincian Produk']);
+
+            foreach ($orders as $row) {
+                $rincian = [];
+                foreach ($row->items as $item) {
+                    $nama = $item->product ? $item->product->nama : 'Produk Dihapus';
+                    $rincian[] = "{$nama} (x{$item->quantity})";
+                }
+
+                fputcsv($file, [
+                    $row->order_no,
+                    \Carbon\Carbon::parse($row->updated_at)->format('Y-m-d H:i'),
+                    $row->customer_name,
+                    $row->whatsapp_number ?? '-',
+                    $row->total_price,
+                    implode(', ', $rincian)
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return \Illuminate\Support\Facades\Response::stream($callback, 200, $headers);
     }
 }
