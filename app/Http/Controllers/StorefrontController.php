@@ -14,12 +14,14 @@ class StorefrontController extends Controller
     {
         // Products query removed since we are fetching bestSellers and topRated directly
         
-        $bestSellers = Product::withSum('orderItems', 'quantity')
+        $bestSellers = Product::has('orderItems')
+            ->withSum('orderItems', 'quantity')
             ->orderByDesc('order_items_sum_quantity')
             ->take(4)
             ->get();
 
-        $topRated = Product::withAvg('reviews', 'rating')
+        $topRated = Product::has('reviews')
+            ->withAvg('reviews', 'rating')
             ->orderByDesc('reviews_avg_rating')
             ->take(4)
             ->get();

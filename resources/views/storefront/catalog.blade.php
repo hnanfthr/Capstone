@@ -36,7 +36,7 @@
                      role="tabpanel" 
                      aria-labelledby="tab-{{ Str::slug($category) }}" tabindex="0">
                     
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-md-4">
                         @foreach($products as $product)
                             <div class="col">
                                 <a href="{{ route('storefront.show', $product->id) }}" class="text-decoration-none">
