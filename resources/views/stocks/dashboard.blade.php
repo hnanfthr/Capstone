@@ -6,11 +6,51 @@
         <h3 class="fw-bold text-dark mb-1"><i class="bi bi-speedometer2 text-primary me-2"></i> Dashboard Stok</h3>
         <p class="text-muted small mb-0">Pantau pergerakan stok (Net Stock & Control) secara real-time.</p>
     </div>
-    <div class="bg-white px-3 py-2 rounded-pill shadow-sm border d-inline-flex align-items-center">
-        <span class="spinner-grow spinner-grow-sm text-success me-2" role="status" aria-hidden="true"></span>
-        <span class="small fw-bold text-muted">Live Update</span>
+    <div class="d-flex align-items-center gap-2">
+        <button type="button" class="btn btn-outline-danger px-3 py-2 rounded-pill shadow-sm bg-white" data-bs-toggle="modal" data-bs-target="#adjustStockModal">
+            <i class="bi bi-dash-circle me-1"></i> Kurangi Stok Manual
+        </button>
+        <div class="bg-white px-3 py-2 rounded-pill shadow-sm border d-inline-flex align-items-center">
+            <span class="spinner-grow spinner-grow-sm text-success me-2" role="status" aria-hidden="true"></span>
+            <span class="small fw-bold text-muted">Live Update</span>
+        </div>
     </div>
 </div>
+
+<!-- Modal Kurangi Stok Manual -->
+<div class="modal fade" id="adjustStockModal" tabindex="-1" aria-labelledby="adjustStockModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold text-danger" id="adjustStockModalLabel"><i class="bi bi-exclamation-triangle-fill me-2"></i>Kurangi Stok Manual</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted small mb-4">Gunakan fitur ini hanya untuk mengurangi stok di luar pesanan website (misal: pesanan langsung via WhatsApp, barang rusak, tester, dll). Sistem FIFO akan tetap berjalan memotong batch tertua secara otomatis.</p>
+                <form action="{{ route('stocks.adjust') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Pilih Kue</label>
+                        <select name="product_id" class="form-select bg-light border-0" required>
+                            <option value="">-- Pilih --</option>
+                            @foreach($products as $p)
+                                <option value="{{ $p->id }}">{{ $p->nama }} (Sisa Stok: {{ $p->stok }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">Jumlah Toples (Dikurangi)</label>
+                        <input type="number" name="quantity" class="form-control bg-light border-0" min="1" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-muted">Catatan/Alasan (Opsional)</label>
+                        <textarea name="note" class="form-control bg-light border-0" rows="2" placeholder="Contoh: Terjual via WA a.n Budi"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100 rounded-3 py-2 fw-bold">Konfirmasi Pemotongan</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
     @forelse($products as $product)

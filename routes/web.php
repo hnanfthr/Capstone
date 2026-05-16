@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/productions/{production}/print', [ProductionController::class, 'print'])->name('productions.print');
 
     Route::get('/stocks/dashboard', [StockDashboardController::class, 'index'])->name('stocks.dashboard');
+    Route::post('/stocks/adjust', [StockDashboardController::class, 'adjust'])->name('stocks.adjust');
 
     Route::resource('employees', EmployeeController::class);
     Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
