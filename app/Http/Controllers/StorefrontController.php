@@ -39,7 +39,9 @@ class StorefrontController extends Controller
             'promo_discount_text' => $dbSettings['promo_discount_text'] ?? '20%',
         ];
 
-        return view('storefront.index', compact('products', 'bestSellers', 'topRated', 'banners', 'settings'));
+        $productsByCategory = Product::where('stok', '>', 0)->get()->groupBy('kategori');
+
+        return view('storefront.index', compact('productsByCategory', 'bestSellers', 'topRated', 'banners', 'settings'));
     }
 
     public function show(Product $product)
