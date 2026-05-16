@@ -122,7 +122,10 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('storefront.index') }}">Katalog Kue</a>
+                    <a class="nav-link {{ request()->routeIs('storefront.index') ? 'active text-primary fw-bold' : '' }}" href="{{ route('storefront.index') }}">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('storefront.catalog') ? 'active text-primary fw-bold' : '' }}" href="{{ route('storefront.catalog') }}">Katalog Kue</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto align-items-center">
@@ -159,6 +162,10 @@
         <a href="{{ route('storefront.index') }}" class="text-decoration-none text-center flex-fill pb-1 {{ request()->routeIs('storefront.index') ? 'text-primary' : 'text-muted' }}" style="color: {{ request()->routeIs('storefront.index') ? 'var(--accent-color) !important' : '' }}">
             <i class="bi bi-shop fs-5 d-block mb-1"></i>
             <span style="font-size: 0.7rem; font-weight: 500;">Beranda</span>
+        </a>
+        <a href="{{ route('storefront.catalog') }}" class="text-decoration-none text-center flex-fill pb-1 {{ request()->routeIs('storefront.catalog') ? 'text-primary' : 'text-muted' }}" style="color: {{ request()->routeIs('storefront.catalog') ? 'var(--accent-color) !important' : '' }}">
+            <i class="bi bi-grid-fill fs-5 d-block mb-1"></i>
+            <span style="font-size: 0.7rem; font-weight: 500;">Katalog</span>
         </a>
         <a href="{{ route('storefront.track') }}" class="text-decoration-none text-center flex-fill pb-1 {{ request()->routeIs('storefront.track') ? 'text-primary' : 'text-muted' }}" style="color: {{ request()->routeIs('storefront.track') ? 'var(--accent-color) !important' : '' }}">
             <i class="bi bi-search fs-5 d-block mb-1"></i>

@@ -15,6 +15,7 @@ use App\Http\Controllers\CheckoutController;
 
 // Storefront Routes
 Route::get('/', [StorefrontController::class, 'index'])->name('storefront.index');
+Route::get('/catalog', [StorefrontController::class, 'catalog'])->name('storefront.catalog');
 Route::get('/product/{product}', [StorefrontController::class, 'show'])->name('storefront.show');
 Route::post('/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
 

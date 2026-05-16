@@ -168,79 +168,15 @@
 </div>
 @endif
 
-<!-- All Products Section -->
-<div id="katalog" class="fade-in-up pt-4">
-    <h3 class="fw-bold text-center mb-4"><i class="bi bi-grid-fill text-secondary me-2"></i> Katalog Kue Spesial</h3>
-    
-    @if($productsByCategory->count() > 0)
-        <!-- Nav Tabs -->
-        <ul class="nav nav-pills justify-content-center mb-4 gap-2" id="katalog-tab" role="tablist">
-            @php $i = 0; @endphp
-            @foreach($productsByCategory as $category => $products)
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link rounded-pill px-4 fw-bold shadow-sm {{ $i == 0 ? 'active' : 'bg-white text-dark border' }}" 
-                            id="tab-{{ Str::slug($category) }}" 
-                            data-bs-toggle="pill" 
-                            data-bs-target="#pane-{{ Str::slug($category) }}" 
-                            type="button" role="tab" 
-                            aria-controls="pane-{{ Str::slug($category) }}" 
-                            aria-selected="{{ $i == 0 ? 'true' : 'false' }}">
-                        {{ $category }} ({{ $products->count() }})
-                    </button>
-                </li>
-                @php $i++; @endphp
-            @endforeach
-        </ul>
-
-        <!-- Tab Content -->
-        <div class="tab-content" id="katalog-tabContent">
-            @php $j = 0; @endphp
-            @foreach($productsByCategory as $category => $products)
-                <div class="tab-pane fade {{ $j == 0 ? 'show active' : '' }}" 
-                     id="pane-{{ Str::slug($category) }}" 
-                     role="tabpanel" 
-                     aria-labelledby="tab-{{ Str::slug($category) }}" tabindex="0">
-                    
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-                        @foreach($products as $product)
-                            <div class="col">
-                                <a href="{{ route('storefront.show', $product->id) }}" class="text-decoration-none">
-                                    <div class="card h-100 product-card border-0 shadow-sm">
-                                        @if($product->foto)
-                                            <img src="{{ asset('storage/' . $product->foto) }}" class="card-img-top" alt="{{ $product->nama }}">
-                                        @else
-                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center text-muted" style="height: 220px;">
-                                                <i class="bi bi-image fs-1"></i>
-                                            </div>
-                                        @endif
-                                        <div class="card-body d-flex flex-column text-center">
-                                            <h5 class="card-title fw-bold mb-1 text-dark">{{ $product->nama }}</h5>
-                                            <p class="text-muted small mb-1">{{ $product->kategori }}</p>
-                                            <p class="text-warning fw-bold mb-3 fs-5">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
-                                            
-                                            <form action="{{ route('cart.add') }}" method="POST" class="mt-auto" onclick="event.stopPropagation();">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <input type="hidden" name="quantity" value="1">
-                                                <button type="submit" class="btn btn-outline-warning w-100 fw-bold rounded-pill">
-                                                    <i class="bi bi-cart-plus"></i> Masukkan Keranjang
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                @php $j++; @endphp
-            @endforeach
-        </div>
-    @else
-        <div class="col-12 text-center py-5">
-            <i class="bi bi-box-seam text-muted" style="font-size: 4rem;"></i>
-            <h4 class="text-muted mt-3">Maaf, belum ada produk yang tersedia saat ini.</h4>
-        </div>
-    @endif
+<!-- Link to Catalog Section -->
+<div id="katalog" class="fade-in-up py-5 text-center mt-4">
+    <div class="bg-light rounded-4 p-5 shadow-sm border mx-auto" style="max-width: 800px;">
+        <i class="bi bi-grid-fill text-secondary mb-3 d-block" style="font-size: 3rem;"></i>
+        <h3 class="fw-bold mb-3 text-dark">Eksplorasi Seluruh Varian Kue</h3>
+        <p class="text-muted mb-4 lead">Dari Wijsman premium, paket Hantaran eksklusif, hingga resep Original keluarga kami. Temukan favorit Anda!</p>
+        <a href="{{ route('storefront.catalog') }}" class="btn btn-theme btn-lg px-5 rounded-pill shadow-sm fw-bold">
+            Lihat Katalog Lengkap <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
 </div>
 @endsection
